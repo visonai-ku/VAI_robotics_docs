@@ -59,8 +59,12 @@ SSH 설정은 [환경 구축](./1_setup.md)에서 미리 해 둡니다.
 
 ```bash title="Orin 컨테이너"
 worker_bringup
-# = ros2 launch ffw_bringup ffw_sg2_follower_ai.launch.py
+# = ros2 launch ffw_bringup ffw_sg2_ai.launch.py
 ```
+
+:::warning[`worker_bringup` 은 Leader까지 함께 띄웁니다]
+`ffw_sg2_ai.launch.py` 는 **Leader(FFW-LG2) + Follower 동시 실행**입니다. LG2를 쓰지 않는다면 `worker_bringup_teleop` 쪽이 맞습니다.
+:::
 
 `command not found` 가 뜨면 `source ~/.bashrc` 후 다시 실행합니다.
 
@@ -68,14 +72,14 @@ worker_bringup
 
 | 명령 | 설명 |
 | --- | --- |
-| `worker_bringup` | 전체 bringup. 켤 때 초기 자세로 이동 |
+| `worker_bringup` | `ffw_sg2_ai.launch.py` — **Leader + Follower**. 켤 때 초기 자세로 이동 |
 | `worker_bringup_teleop` | follower 모터·통신·카메라만. 켤 때 **헤드만** `[0, 0]` 으로 이동 |
 | `worker_outbound` / `worker_outbound_meta` | 관절 전송 / 관절 + 카메라 전송 |
 | `worker_inbound` | 명령 수신 |
-| `worker_shutdown` | 팔 접기 (inbound 를 먼저 끔) |
+| `worker_shutdown` | 팔 접기 — `scripts/ffw_sg2_shutdown.sh` 실행 (inbound 를 먼저 끔) |
 
 :::warning[어느 bringup을 쓸지는 파이프라인마다 다릅니다]
-`worker_bringup_teleop` 이 헤드를 움직이는 이유는, 헤드가 가동 범위를 벗어나 있으면 VR 쪽에서 로봇 상태를 거부하기 때문입니다.
+`worker_bringup_teleop` 이 헤드를 움직이는 이유는, VR strict worker가 `head_joint1` 이 **`[-0.2317, 0.6951] rad`** 밖에 있으면 로봇 상태를 전부 거부하기 때문입니다. 팔·리프트·베이스는 건드리지 않습니다.
 
 - 헤드도 그대로 두기: `worker_bringup_teleop init_head:=false`
 - 전부 초기 자세로: `worker_bringup_teleop init_position:=true`

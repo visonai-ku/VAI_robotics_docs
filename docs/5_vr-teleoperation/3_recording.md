@@ -45,7 +45,7 @@ title: 녹화와 데이터
 | 파일 | 내용 |
 | --- | --- |
 | `joints.npz` | 로봇 실제 관절값 `t, q, names` |
-| `action.npz` | 텔레옵 명령 `t, q, names, valid` (valid = 실제 조작 중이었는지) |
+| `action.npz` | 텔레옵 명령 `t, q, names, valid, mode, motion` (valid = 직전 명령이 신선한지, mode = DRY/REAL, motion = 동작 구분) |
 | `rgb_head.mp4`, `rgb_wrist_left.mp4`, `rgb_wrist_right.mp4` | 카메라별 영상 |
 | `rgb_<cam>_t.npy` | 영상 프레임 시각 |
 | `meta.json` | 길이, 샘플 수, 카메라 목록 등 |

@@ -49,21 +49,7 @@ const config = {
           showLastUpdateTime: true,
           showLastUpdateAuthor: true,
         },
-        blog: {
-          showReadingTime: true,
-          blogTitle: '업데이트',
-          blogDescription: '문서 및 시스템 변경 사항 공지',
-          blogSidebarTitle: '최근 글',
-          postsPerPage: 10,
-          feedOptions: {
-            type: ['rss', 'atom'],
-            xslt: true,
-          },
-          editUrl: `${GITHUB_REPO}/tree/main/`,
-          onInlineTags: 'warn',
-          onInlineAuthors: 'warn',
-          onUntruncatedBlogPosts: 'warn',
-        },
+        blog: false,
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -122,12 +108,6 @@ const config = {
             items: [
               {label: 'GitHub 저장소', href: GITHUB_REPO},
               {label: '이슈 등록', href: `${GITHUB_REPO}/issues`},
-            ],
-          },
-          {
-            title: '더 보기',
-            items: [
-              {label: 'Docusaurus 문서', href: 'https://docusaurus.io/'},
             ],
           },
         ],

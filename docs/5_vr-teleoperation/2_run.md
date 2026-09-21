@@ -151,15 +151,30 @@ grip당 20cm 작업범위와 속도·충돌 제한도 두 모드가 같습니다
 
 ## 베이스 이동 (키보드)
 
-팔과 별개로 **스워브 베이스를 키보드로** 움직일 수 있습니다. 두 가지 경로가 있고 사용하는 채널이 다릅니다.
+팔과 별개로 **스워브 베이스를 키보드로** 움직일 수 있습니다. 다만 VR 텔레옵과 **동시에는 쓸 수 없습니다.**
 
-### 텔레옵 세션 중 — `SG2 Base` 창
+:::danger[VR 세션 중에는 베이스가 움직이지 않습니다]
+로봇의 `inbound.py` 는 `{"base": [vx, vy, wz]}` 를 받아 `/cmd_vel` 로 변환하는데, 이 처리는 **strict 모드(`SG2_FIXED_QUEST=1`)에서 건너뜁니다.** strict 경로는 JSON 게이트만 처리하고 `base` 키를 보기 전에 반환합니다.
 
-녹화 노트북을 실행하면 함께 뜨는 창입니다.
+VR 텔레옵은 strict로 띄우므로, 같은 세션에서 키보드로 베이스를 움직일 수 없습니다. 베이스를 쓰려면 **inbound를 `SG2_FIXED_QUEST` 없이 다시 띄워야** 합니다.
+:::
 
-1. `Base command` 를 `ON` 으로 바꿉니다.
-2. **창을 클릭해 포커스를 줍니다.** (포커스가 없으면 키가 먹지 않습니다)
-3. 키로 움직입니다.
+### 실행 방법
+
+`ri_motion_v5_VR/project/ffw_sg2_vr_teleoperation/real_notebook/real_base_controller_sg2.ipynb` 를 사용합니다.
+
+```text title="명령 경로"
+맥북 노트북 ──ZMQ :5561 {"base":[vx,vy,wz]}──▶ Orin inbound.py ──▶ /cmd_vel ──▶ swerve_drive_controller
+```
+
+팔 명령과 **같은 포트 `:5561`** 을 씁니다. 베이스 전용 채널은 없습니다.
+
+```bash title="Orin 준비 — strict 없이"
+worker_bringup_teleop                       # 리더 없이 follower 만
+SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound      # SG2_FIXED_QUEST 를 주지 않습니다
+```
+
+노트북에서 `Robot command` 를 `ON` 으로 바꾸고 **MuJoCo 창을 클릭해 포커스를 준 뒤** 키를 누릅니다.
 
 | 키 | 동작 |
 | --- | --- |
@@ -174,31 +189,12 @@ grip당 20cm 작업범위와 속도·충돌 제한도 두 모드가 같습니다
 | `NORMAL` | 0.18 m/s | 0.36 rad/s |
 | `FAST` | 0.3 m/s | 0.6 rad/s |
 
-:::warning[Orin inbound 버전 확인]
-이 창은 베이스 전용 채널 **`:5562`** 를 씁니다. Orin의 `inbound.py` 가 **2026-09-19 이후 버전**이어야 하고, 교체했다면 재시작해야 합니다.
-:::
-
-창이 포커스를 잃거나 `OFF` 로 바꾸거나 노트북을 종료하면 정지 명령이 나가고, 명령이 1초 끊기면 로봇이 스스로 멈춥니다.
-
-### 베이스만 단독으로 — `real_base_controller_sg2.ipynb`
-
-`ri_motion_v5_VR/project/ffw_sg2_vr_teleoperation/real_notebook/real_base_controller_sg2.ipynb` 를 따로 실행하는 방법입니다. 키와 속도는 위와 같습니다.
-
-```text title="명령 경로"
-맥북 노트북 ──ZMQ :5561 {"base":[vx,vy,wz]}──▶ Orin inbound.py ──▶ /cmd_vel ──▶ swerve_drive_controller
-```
-
-```bash title="Orin 준비"
-worker_bringup_teleop                       # 리더 없이 follower 만
-SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
-```
-
-:::danger[strict 모드에서는 베이스 명령이 무시됩니다]
-이 노트북은 `SG2_FIXED_QUEST=1` (strict 모드)로 띄운 inbound에서는 동작하지 않습니다. 베이스를 움직이려면 그 환경 변수 **없이** `worker_inbound` 를 실행하세요.
-:::
+### 안전 장치
 
 - `Robot command` 가 `ON` 일 때만 전송됩니다. `OFF` 로 바꾸거나 셀을 끝내면 0을 보내고 멈춥니다.
-- `inbound.py` 가 0.3 m/s · 0.6 rad/s로 한 번 더 제한합니다.
+- 창이 포커스를 잃으면 키 입력이 끊겨 정지합니다.
+- 명령이 **1초** 끊기면 로봇이 스스로 멈춥니다 (`swerve_drive_controller` 의 `cmd_vel_timeout`).
+- `inbound.py` 가 `0.3 m/s` · `0.6 rad/s` 로 한 번 더 제한합니다.
 - 화면의 로봇 위치는 **보낸 명령을 적분한 값(open loop)** 이라 실제 위치와 다를 수 있습니다.
 - 처음에는 주변을 비우고 `Speed = SLOW` 로 시작하세요.
 

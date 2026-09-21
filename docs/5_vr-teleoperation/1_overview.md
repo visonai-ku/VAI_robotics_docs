@@ -57,7 +57,7 @@ package/
   episode_recorder.py           ← 녹화
   vr_buttons.py                 ← X/Y/B 버튼 동작
   init_project.py               ← 경로 설정 (vendor/ 사본을 sys.path 앞에 삽입)
-  worker/                       ← 로봇에 올릴 worker 원본 3종
+  worker/                       ← 로봇용 worker 사본 (strict VR 프로토콜)
     inbound.py  outbound.py  fixed_quest_protocol.py
 deploy/20260917-home-gripper-worker/   ← 구버전 worker 배포본 (fixed_quest_protocol.py 주의)
 docs/WORKER_SETUP.md            ← 로봇 worker 배포 안내

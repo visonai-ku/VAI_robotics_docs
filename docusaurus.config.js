@@ -4,7 +4,7 @@
 
 import {themes as prismThemes} from 'prism-react-renderer';
 
-const GITHUB_REPO = 'https://github.com/jaehoondata/VAI_robotics_docs';
+const GITHUB_REPO = 'https://github.com/visonai-ku/VAI_robotics_docs';
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
@@ -16,11 +16,11 @@ const config = {
     v4: true,
   },
 
-  // GitHub Pages 배포 주소: https://jaehoondata.github.io/VAI_robotics_docs/
-  url: 'https://jaehoondata.github.io',
+  // GitHub Pages 배포 주소: https://visonai-ku.github.io/VAI_robotics_docs/
+  url: 'https://visonai-ku.github.io',
   baseUrl: '/VAI_robotics_docs/',
 
-  organizationName: 'jaehoondata',
+  organizationName: 'visonai-ku',
   projectName: 'VAI_robotics_docs',
   trailingSlash: false,
 

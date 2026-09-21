@@ -5,7 +5,7 @@ title: 문서 기여 방법
 
 # 문서 기여 방법
 
-문서는 마크다운 파일이고, 저장소는 [VAI_robotics_docs](https://github.com/jaehoondata/VAI_robotics_docs)입니다. 고치는 방법은 두 가지입니다.
+문서는 마크다운 파일이고, 저장소는 [VAI_robotics_docs](https://github.com/visonai-ku/VAI_robotics_docs)입니다. 고치는 방법은 두 가지입니다.
 
 ## 방법 1 — GitHub 웹에서 고치기 (간단한 수정)
 
@@ -19,7 +19,7 @@ title: 문서 기여 방법
 ## 방법 2 — 로컬에서 고치기 (문서 추가·구조 변경)
 
 ```bash
-git clone https://github.com/jaehoondata/VAI_robotics_docs.git
+git clone https://github.com/visonai-ku/VAI_robotics_docs.git
 cd VAI_robotics_docs
 npm install
 npm start          # http://localhost:3000 에서 실시간 미리보기

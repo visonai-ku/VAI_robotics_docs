@@ -57,7 +57,7 @@ Quest 3 브라우저 ──(WebXR, wss:8443)──▶ 맥북 노트북 ──▶
 | B | 오른쪽 | (1초) reset pose |
 | Meta(Oculus) · 메뉴 버튼 | 양손 | 시스템 전용이라 웹 페이지에서 읽히지 않음 |
 
-자세한 조작 규칙은 [VR Teleoperation 실행](../5_vr-teleoperation/2_run.md)에 정리되어 있습니다.
+자세한 조작 규칙은 [VR Teleoperation 실행](../5_vr-teleoperation/3_run.md)에 정리되어 있습니다.
 
 ## 관련 문서
 

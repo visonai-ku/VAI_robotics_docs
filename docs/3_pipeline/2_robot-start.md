@@ -8,10 +8,10 @@ title: 로봇 구동
 :::info[시작 전 확인]
 - [ ] [환경 구축](./1_setup.md) 완료 — conda 환경 `ri_motion_v5_env`, 저장소 clone, SSH 설정
 - [ ] 로봇 작업 반경에 사람·장애물 없음, **E-stop 담당자 1명 대기**
-- [ ] (VR Teleoperation을 쓸 경우) 로봇 worker가 최신 버전인가 — inbound 로그에 `home 30.0 deg/s`
+- [ ] (VR Teleoperation을 쓸 경우) 로봇 worker가 최신 버전인가 — inbound 로그에 `home 100.0 deg/s`
 :::
 
-전원을 넣고 ROS 2 노드가 올라오는 **bringup**까지의 절차입니다. 여기까지 끝나면 [Interactive Marker](../4_interactive-marker/interactive-marker.md) 또는 [VR Teleoperation](../5_vr-teleoperation/2_run.md) 으로 넘어갑니다.
+전원을 넣고 ROS 2 노드가 올라오는 **bringup**까지의 절차입니다. 여기까지 끝나면 [Interactive Marker](../4_interactive-marker/interactive-marker.md) 또는 [VR Teleoperation](../5_vr-teleoperation/3_run.md) 으로 넘어갑니다.
 
 ## 1. 전원 인가
 
@@ -90,7 +90,7 @@ worker_bringup
 | 파이프라인 | bringup | outbound · inbound |
 | --- | --- | --- |
 | [Interactive Marker](../4_interactive-marker/interactive-marker.md) | `worker_bringup` | `SG2_FIXED_QUEST` **없이** |
-| [VR Teleoperation](../5_vr-teleoperation/2_run.md) | `worker_bringup_teleop` | `SG2_FIXED_QUEST=1` |
+| [VR Teleoperation](../5_vr-teleoperation/3_run.md) | `worker_bringup_teleop` | `SG2_FIXED_QUEST=1` |
 
 ### ROBOTIS 공식 launch 옵션
 

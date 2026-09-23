@@ -1,5 +1,5 @@
 ---
-sidebar_position: 2
+sidebar_position: 3
 title: 실행
 ---
 
@@ -7,7 +7,7 @@ title: 실행
 
 :::info[시작 전 확인]
 - [ ] [환경 구축](../3_pipeline/1_setup.md) 완료 — conda 환경 `ri_motion_v5_env`, 커널 등록
-- [ ] 로봇 worker가 최신 버전인가 — inbound 로그에 `arm 120 deg/s, gripper 120 deg/s, home 30.0 deg/s`
+- [ ] 로봇 worker가 최신 버전인가 — inbound 로그에 `arm 120 deg/s, gripper 120 deg/s, home 100.0 deg/s`
 - [ ] Quest가 Wi-Fi `AIWORKER1115` 에 연결되어 있고, 맥북도 192.168.6.x 네트워크에 있음
 :::
 
@@ -56,7 +56,7 @@ SG2_FIXED_QUEST=1 SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
 - `worker_bringup_teleop` 은 켤 때 **헤드만** `[0, 0]` 으로 움직이고 팔·리프트·베이스는 그대로 둡니다. (헤드가 범위를 벗어나 있으면 VR 쪽에서 로봇 상태를 거부하기 때문)
   - 헤드도 그대로: `worker_bringup_teleop init_head:=false`
   - 전부 초기 자세로: `worker_bringup_teleop init_position:=true`
-- inbound 시작 로그에 `home 30.0 deg/s` 가 보여야 합니다. (B 버튼 reset pose 속도)
+- inbound 시작 로그에 `home 100.0 deg/s` 가 보여야 합니다. (B 버튼 reset pose 속도)
 
 :::warning
 `SG2_FIXED_QUEST=1` 과 `SG2_ZMQ_SUB_IP` 를 빼먹으면 로봇이 명령을 받지 못합니다.
@@ -118,7 +118,7 @@ SG2_FIXED_QUEST=1 SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
   - **바로 멈추지는 않습니다.** 일시적인 IK 미수렴이면 양팔·그리퍼의 현재 명령을 **최대 1초** 유지하면서 최신 목표로 재시도합니다. 화면에 경과 시간과 재시도 횟수가 표시됩니다.
   - 1초 안에 풀리면 같은 grip 기준에서 그대로 이어집니다. 시간을 넘기거나 grip을 놓거나 피드백에 이상이 생기면 정지합니다.
   - 계속 실패하면 손을 로봇이 닿는 범위로 되돌리고 양손 grip을 놓았다가 다시 잡습니다.
-- 잡은 직후 속도는 **8초에 걸쳐** 0에서 설정값까지 올라갑니다 (시작 ramp).
+- 잡은 직후 속도는 **3초에 걸쳐** 0에서 설정값까지 올라갑니다 (시작 ramp).
 
 ### 추적 손실 모드
 
@@ -143,7 +143,8 @@ grip당 20cm 작업범위와 속도·충돌 제한도 두 모드가 같습니다
 
 ### B 버튼 reset pose
 
-- 단계마다 **경로 충돌 검사**를 하고 30°/s로 움직입니다. 경로가 막히면 아무것도 보내지 않고 멈춥니다.
+- 단계마다 **경로 충돌 검사**를 하고 100°/s로 움직입니다. 경로가 막히면 아무것도 보내지 않고 멈춥니다.
+- **예전보다 3배 이상 빠릅니다.** 2026-09-22에 30°/s에서 100°/s로 올라갔으니, 처음에는 DRY RUN에서 궤적을 확인하세요.
 - 통신 지연 같은 일시적 문제로 멈추면 그 단계를 자동으로 **2번까지** 다시 시도합니다.
 - 헤드는 움직이지 않습니다. (`worker_bringup_teleop` 이 켤 때 이미 `[0, 0]`)
 - 도는 동안 컨트롤러 조작은 무시됩니다. 끝나면 양손 grip을 놓았다 다시 잡으면 조작이 재개됩니다.
@@ -233,5 +234,5 @@ SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound      # SG2_FIXED_QUEST 를 주지 않�
 ## 관련 문서
 
 - [개요](./1_overview.md)
-- [녹화와 데이터](./3_recording.md)
-- [문제 해결](./4_troubleshooting.md)
+- [녹화와 데이터](./4_recording.md)
+- [문제 해결](./5_troubleshooting.md)

@@ -1,12 +1,12 @@
 ---
-sidebar_position: 3
+sidebar_position: 4
 title: 녹화와 데이터
 ---
 
 # 녹화와 데이터
 
 :::info[시작 전 확인]
-- [ ] [실행](./2_run.md) 절차로 텔레옵이 돌고 있는가
+- [ ] [실행](./3_run.md) 절차로 텔레옵이 돌고 있는가
 - [ ] Orin outbound를 `worker_outbound_meta` 로 띄웠는가 (카메라 3대)
 - [ ] 노트북 녹화 설정 셀의 `TASK_NAME` 을 이번 작업 이름으로 바꿨는가
 :::
@@ -74,6 +74,6 @@ title: 녹화와 데이터
 
 ## 관련 문서
 
-- [실행](./2_run.md)
-- [문제 해결](./4_troubleshooting.md)
+- [실행](./3_run.md)
+- [문제 해결](./5_troubleshooting.md)
 - [AI WORKER 개요 — 센서 구성](../1_ai-worker/1_overview.md)

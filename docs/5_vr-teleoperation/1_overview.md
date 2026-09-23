@@ -20,7 +20,7 @@ Quest 3 브라우저 ──(WebXR, wss:8443)──▶ 맥북 노트북 ──(ZM
 
 | 장치 | 역할 | 주소 |
 | --- | --- | --- |
-| Quest 3 | 브라우저로 맥북 페이지에 접속, 컨트롤러 위치·버튼 전송 | 192.168.6.100 |
+| Quest 3 | 브라우저로 맥북 페이지에 접속, 컨트롤러 위치·버튼 전송 | 192.168.6.x (DHCP) |
 | 맥북 | 노트북 실행: Quest 입력 → IK → 안전 검사 → 로봇 명령, 녹화 | 192.168.6.x (DHCP, 바뀔 수 있음) |
 | Orin (로봇) | ROS 2 드라이버 + ZMQ 브리지 (`ai_worker` 도커 컨테이너) | 192.168.6.2 / `ffw-SNPR48A1115.local` |
 
@@ -81,8 +81,8 @@ requirements-notebook.txt       ← 위 + ipykernel, jupyterlab
 
 ## 관련 문서
 
-- [실행](./2_run.md)
-- [녹화와 데이터](./3_recording.md)
-- [문제 해결](./4_troubleshooting.md)
+- [실행](./3_run.md)
+- [녹화와 데이터](./4_recording.md)
+- [문제 해결](./5_troubleshooting.md)
 - [Pipeline — 환경 구축](../3_pipeline/1_setup.md)
 - [Pipeline — 로봇 구동](../3_pipeline/2_robot-start.md)

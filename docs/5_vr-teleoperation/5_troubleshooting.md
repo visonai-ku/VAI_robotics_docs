@@ -1,5 +1,5 @@
 ---
-sidebar_position: 4
+sidebar_position: 5
 title: 문제 해결
 ---
 
@@ -36,7 +36,7 @@ title: 문제 해결
 | 화면에 `!! IK FAILED` | 손이 로봇이 닿을 수 없는 곳. 손을 되돌리고 grip을 놓았다 다시 잡기 |
 | B reset pose가 "중단 … 팔을 조금 벌린 뒤 다시 B" | 경로 충돌 검사에서 막힘. VR로 팔 사이를 벌린 뒤 다시 B |
 | 로봇이 두 곳에서 명령 받는 듯 흔들림 | `ros2 launch robotis_vuer ...`(ROBOTIS VR)이나 LG2 리더가 켜져 있음. 끄고 사용 |
-| B reset pose가 30°/s가 아니라 느림 | 로봇의 `fixed_quest_protocol.py` 가 구버전. `VR_teleoperation/package/worker/fixed_quest_protocol.py` 로 교체하고 inbound·outbound 재시작 (배포 절차는 별도 문서) |
+| B reset pose가 100°/s가 아니라 느림 | 로봇의 `fixed_quest_protocol.py` 가 구버전. `VR_teleoperation/package/worker/fixed_quest_protocol.py` 로 교체하고 inbound·outbound 재시작 (배포 절차는 별도 문서) |
 | 키보드로 베이스가 안 움직임 | inbound가 strict 모드(`SG2_FIXED_QUEST=1`)로 떠 있으면 베이스 명령이 무시됨. 환경 변수 없이 재시작. 그 외에는 MuJoCo 창 포커스와 `Robot command` `ON` 확인 |
 | 관절에 힘이 없음 | torque-off 상태. Remote E-STOP의 **A 버튼** |
 
@@ -60,5 +60,5 @@ title: 문제 해결
 ## 관련 문서
 
 - [개요](./1_overview.md)
-- [실행](./2_run.md)
-- [녹화와 데이터](./3_recording.md)
+- [실행](./3_run.md)
+- [녹화와 데이터](./4_recording.md)

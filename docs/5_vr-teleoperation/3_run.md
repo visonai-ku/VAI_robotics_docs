@@ -6,7 +6,7 @@ title: 실행
 # VR Teleoperation 실행
 
 :::info[시작 전 확인]
-- [ ] [환경 구축](../3_pipeline/1_setup.md) 완료 — conda 환경 `ri_motion_v5_env`, 커널 등록
+- [ ] [환경 구축](../3_pipeline/1_setup.md) 완료 — conda 환경 `ri_motion_v5_py312`, 커널 등록
 - [ ] 로봇 worker가 최신 버전인가 — inbound 로그에 `arm 120 deg/s, gripper 120 deg/s, home 100.0 deg/s`
 - [ ] Quest가 Wi-Fi `AIWORKER1115` 에 연결되어 있고, 맥북도 192.168.6.x 네트워크에 있음
 :::
@@ -66,7 +66,7 @@ SG2_FIXED_QUEST=1 SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
 ## ② 맥북 — 노트북 실행
 
 1. VS Code에서 `VR_teleoperation/real_notebook/real_vr_teleop_record.ipynb` 를 엽니다.
-2. 오른쪽 위 커널을 `ri_motion_v5_env` 로 바꿉니다.
+2. 오른쪽 위 커널을 `ri_motion_v5_py312` 로 바꿉니다.
 3. Restart 후 첫 셀부터 순서대로 실행합니다.
 4. 설정 셀 출력의 IP를 확인합니다. 이 IP로 ①의 터미널 3과 ③의 Quest 주소를 맞춥니다.
 

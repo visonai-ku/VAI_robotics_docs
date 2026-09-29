@@ -1,0 +1,8 @@
+{
+  "label": "Policy Inference",
+  "position": 7,
+  "link": {
+    "type": "generated-index",
+    "description": "VR로 모은 데이터로 학습한 LeRobot 정책을 FFW-SG2에서 자율 구동하는 방법입니다."
+  }
+}

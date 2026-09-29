@@ -6,7 +6,7 @@ title: 환경 구축
 # 환경 구축
 
 :::note
-**처음 한 번만** 하는 준비입니다. Interactive Marker와 VR Teleoperation 양쪽에 공통으로 필요합니다.
+**처음 한 번만** 하는 준비입니다. Interactive Marker, VR Teleoperation, Policy Inference에 공통으로 필요합니다.
 끝나면 [로봇 구동](./2_robot-start.md)으로 넘어가세요.
 :::
 
@@ -52,54 +52,52 @@ git clone https://github.com/jaehoondata/VAI_AIWORKER
 
 ## 4. conda 가상환경과 커널
 
-두 파이프라인 모두 `ri_motion_v5_env` 환경 하나를 씁니다. **필요한 설치 내용이 다르니** 쓰려는 쪽에 맞춰 설치하세요.
+VR Teleoperation, Interactive Marker, 베이스, 정책 추론 노트북은 모두 **Python 3.12 / LeRobot 0.6.1** 환경 `ri_motion_v5_py312` 하나를 씁니다. 예전 `ri_motion_v5_env`(Python 3.10, LeRobot 0.4.4)에서는 녹화와 정책 추론이 동작하지 않습니다.
 
-```bash title="공통 — 환경 생성"
-conda create -n ri_motion_v5_env python=3.10 pip
-conda activate ri_motion_v5_env
+:::warning[Apple Silicon 맥만 됩니다]
+LeRobot 0.6.1은 PyTorch 2.7 이상이 필요한데, Intel Mac용 PyTorch는 2.2까지만 나와 있습니다. Intel Mac에서는 이 환경을 만들 수 없습니다.
+:::
+
+저장소에 검증된 환경 파일(`environments/ri_motion_v5_py312.macos-arm64.yml`)이 있으니 그대로 복원합니다.
+
+```bash title="VAI_AIWORKER 저장소 루트에서"
+conda env create -f environments/ri_motion_v5_py312.macos-arm64.yml
+conda activate ri_motion_v5_py312
+
+# LeRobot이 설치한 headless OpenCV를 GUI 버전으로 덮어씁니다 (마지막에 해야 합니다)
+python -m pip install --force-reinstall --no-deps opencv-python==4.12.0.88
+
+# Jupyter 커널 등록 — 커널 이름과 표시 이름 모두 ri_motion_v5_py312
+python -m ipykernel install --user \
+  --name ri_motion_v5_py312 --display-name ri_motion_v5_py312
 ```
 
-### VR Teleoperation을 쓸 경우
+- 같은 환경을 이미 만들어 두었다면 `conda env create` 는 건너뜁니다.
+- OpenCV를 다시 설치하지 않으면 녹화·검수 창을 띄울 때 `The function is not implemented` 오류가 납니다.
 
-`VR_teleoperation/` 폴더는 `vendor/` 사본을 `sys.path` 앞에 넣어 쓰므로 이것만으로 동작합니다.
-
-```bash title="VR Teleoperation 의존성"
-cd VAI_AIWORKER/VR_teleoperation
-pip install -r requirements-notebook.txt
+```bash title="설치 확인"
+python -m pip check          # 의존성 충돌이 없어야 합니다
+python -c "import cv2; print([l.strip() for l in cv2.getBuildInformation().splitlines() if 'GUI:' in l])"   # COCOA
+jupyter kernelspec list      # ri_motion_v5_py312 가 보여야 합니다
 ```
 
-### Interactive Marker를 쓸 경우
+:::tip[Ubuntu PC]
+Ubuntu에서는 저장소 루트의 `bash setup_ubuntu_env.sh` 가 같은 이름의 환경과 커널을 만듭니다.
+:::
 
-Joint/EEF 컨트롤러 노트북은 `vendor/` 사본이 아니라 **`ri_motion_v5_package` 본체**가 필요합니다.
+### Interactive Marker를 쓸 경우 — Xcode Command Line Tools
 
-```bash title="Interactive Marker 의존성"
-cd VAI_AIWORKER/ri_motion_v5_VR/ri_motion_v5_package
-pip install -r requirements.txt
-pip install -e .
-```
-
-둘 다 쓴다면 같은 환경에 양쪽을 모두 설치하면 됩니다.
-
-### Jupyter 커널 등록
-
-커널 이름과 표시 이름 모두 `ri_motion_v5_env` 입니다. 노트북들이 이 이름을 기대합니다.
-
-```bash title="Jupyter 커널 등록"
-/opt/homebrew/Caskroom/miniforge/base/envs/ri_motion_v5_env/bin/python3 \
-  -m ipykernel install --user --name ri_motion_v5_env --display-name ri_motion_v5_env
-```
-
-:::warning[macOS scipy 문제]
-노트북 첫 셀에서 `ImportError ... _spropack ... __thread_bss` 가 나면 pip으로 설치된 scipy가 macOS와 맞지 않는 경우입니다.
+Joint/EEF 노트북은 준비 셀에서 C++ IK 모듈을 **현재 Python에 맞게 직접 빌드**합니다. 컴파일러가 필요하므로 한 번 설치해 둡니다.
 
 ```bash
-mamba install -n ri_motion_v5_env -c conda-forge scipy
+xcode-select --install
 ```
-:::
+
+별도의 `pip install` 은 필요 없습니다. Joint/EEF/Base 노트북도 VR Teleoperation과 같은 `VR_teleoperation/` 공통 런타임을 불러 씁니다.
 
 ## 5. 커널은 항상 새로 시작
 
-`package/init_project.py` 는 `vendor/` 사본을 `sys.path` 앞에 넣어 모듈 경로를 고정합니다. 이때 **프로젝트 폴더 바깥에서 불러온 모듈이 이미 커널에 올라와 있으면 예외를 던지고 멈춥니다.**
+모든 노트북이 첫 셀에서 `VR_teleoperation/package/init_project.py` 를 실행합니다. 이 스크립트는 `vendor/` 사본을 `sys.path` 앞에 넣어 모듈 경로를 고정합니다. 이때 **프로젝트 폴더 바깥에서 불러온 모듈이 이미 커널에 올라와 있으면 예외를 던지고 멈춥니다.**
 
 ```text title="이 오류가 나면 커널 재시작"
 RuntimeError: An earlier project module is already loaded (...).

@@ -6,7 +6,7 @@ title: 개인 보정
 # 개인 의도 축 보정
 
 :::info[시작 전 확인]
-- [ ] [환경 구축](../3_pipeline/1_setup.md) 완료 — conda 환경 `ri_motion_v5_env`, 커널 등록
+- [ ] [환경 구축](../3_pipeline/1_setup.md) 완료 — conda 환경 `ri_motion_v5_py312`, 커널 등록
 - [ ] Quest가 Wi-Fi `AIWORKER1115` 에 연결되어 있고, 맥북도 192.168.6.x 네트워크에 있음
 - [ ] 다른 Quest 수신 노트북을 **STOP 해서 `8443` 포트를 비웠음**
 :::

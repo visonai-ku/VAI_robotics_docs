@@ -14,9 +14,10 @@ title: Intro
 | --- | --- |
 | [**AI WORKER**](./1_ai-worker/1_overview.md) | ROBOTIS가 제공하는 FFW-SG2의 하드웨어·소프트웨어 사양을 다룹니다. |
 | [**Meta Quest 3**](./2_meta-quest-3/overview.md) | VR teleoperation에 사용하는 Meta Quest 3의 장비 특징과 기본 사용법을 다룹니다. |
-| [**Pipeline**](./3_pipeline/1_setup.md) | 두 조작 방식에 공통으로 필요한 환경 구축과 로봇 구동·종료를 다룹니다. |
+| [**Pipeline**](./3_pipeline/1_setup.md) | 모든 조작 방식에 공통으로 필요한 환경 구축, 로봇 구동·종료, 프리드라이브를 다룹니다. |
 | [**Interactive Marker**](./4_interactive-marker/interactive-marker.md) | MuJoCo 뷰어의 마커를 끌어 FFW-SG2를 조작하는 Joint / EEF 컨트롤러 사용법을 다룹니다. |
 | [**VR Teleoperation**](./5_vr-teleoperation/1_overview.md) | 팀에서 개발한 파이프라인으로 FFW-SG2를 face-to-face teleoperation하고 데모를 녹화하는 방법을 다룹니다. |
+| [**Policy Inference**](./6_policy-inference/policy-inference.md) | 녹화한 데이터로 학습한 LeRobot 정책을 FFW-SG2에서 자율 구동하는 방법을 다룹니다. |
 
 ## 처음 오셨다면
 
@@ -28,6 +29,7 @@ title: Intro
 4. 조작 방식을 고릅니다.
    - [Interactive Marker](./4_interactive-marker/interactive-marker.md) — 마우스로 마커를 끌어 정밀하게 한 번씩
    - [VR Teleoperation](./5_vr-teleoperation/1_overview.md) — Quest 컨트롤러로 연속 조작하고 데모 녹화
+   - [Policy Inference](./6_policy-inference/policy-inference.md) — 학습한 정책으로 자율 구동
 5. [Pipeline — 로봇 종료](./3_pipeline/3_robot-exit.md) — 팔을 접고 전원을 내립니다.
 
 ## Editing

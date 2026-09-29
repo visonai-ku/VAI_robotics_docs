@@ -17,7 +17,7 @@ const FeatureList = [
   {
     to: '/docs/pipeline/setup',
     title: 'Pipeline',
-    description: '두 조작 방식에 공통으로 필요한 환경 구축과 로봇 구동·종료 절차입니다.',
+    description: '모든 조작 방식에 공통으로 필요한 환경 구축, 로봇 구동·종료, 프리드라이브 절차입니다.',
   },
   {
     to: '/docs/interactive-marker/interactive-marker',
@@ -28,6 +28,11 @@ const FeatureList = [
     to: '/docs/vr-teleoperation/overview',
     title: 'VR Teleoperation',
     description: '팀 파이프라인으로 FFW-SG2를 face-to-face teleoperation하고 데모를 녹화합니다.',
+  },
+  {
+    to: '/docs/policy-inference/policy-inference',
+    title: 'Policy Inference',
+    description: '녹화한 데이터로 학습한 LeRobot 정책을 FFW-SG2에서 자율 구동합니다.',
   },
 ];
 

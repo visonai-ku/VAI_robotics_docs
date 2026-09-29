@@ -6,12 +6,12 @@ title: 로봇 구동
 # 로봇 구동
 
 :::info[시작 전 확인]
-- [ ] [환경 구축](./1_setup.md) 완료 — conda 환경 `ri_motion_v5_env`, 저장소 clone, SSH 설정
+- [ ] [환경 구축](./1_setup.md) 완료 — conda 환경 `ri_motion_v5_py312`, 저장소 clone, SSH 설정
 - [ ] 로봇 작업 반경에 사람·장애물 없음, **E-stop 담당자 1명 대기**
-- [ ] (VR Teleoperation을 쓸 경우) 로봇 worker가 최신 버전인가 — inbound 로그에 `home 100.0 deg/s`
+- [ ] 로봇 worker가 최신 버전인가 — inbound 시작 로그에 `Protocol: strict JSON; explicit arm required` 와 `home 100.0 deg/s`
 :::
 
-전원을 넣고 ROS 2 노드가 올라오는 **bringup**까지의 절차입니다. 여기까지 끝나면 [Interactive Marker](../4_interactive-marker/interactive-marker.md) 또는 [VR Teleoperation](../5_vr-teleoperation/3_run.md) 으로 넘어갑니다.
+전원을 넣고 ROS 2 노드가 올라오는 **bringup**까지의 절차입니다. 여기까지 끝나면 [Interactive Marker](../4_interactive-marker/interactive-marker.md), [VR Teleoperation](../5_vr-teleoperation/3_run.md), [Policy Inference](../6_policy-inference/policy-inference.md) 중 하나로 넘어갑니다.
 
 ## 1. 전원 인가
 
@@ -74,23 +74,36 @@ worker_bringup
 | --- | --- |
 | `worker_bringup` | `ffw_sg2_ai.launch.py` — **Leader + Follower**. 켤 때 초기 자세로 이동 |
 | `worker_bringup_teleop` | follower 모터·통신·카메라만. 켤 때 **헤드만** `[0, 0]` 으로 이동 |
-| `worker_outbound` / `worker_outbound_meta` | 관절 전송 / 관절 + 카메라 전송 |
-| `worker_inbound` | 명령 수신 |
+| `worker_outbound` / `worker_outbound_meta` | 관절 상태 전송 (:5560) / 관절 + 카메라 3대 전송 |
+| `worker_inbound` | 맥북 명령 수신 (:5561) — 팔·그리퍼·리프트·헤드·베이스 공통 |
 | `worker_shutdown` | 팔 접기 — `scripts/ffw_sg2_shutdown.sh` 실행 (inbound 를 먼저 끔) |
 
 :::warning[어느 bringup을 쓸지는 파이프라인마다 다릅니다]
-`worker_bringup_teleop` 이 헤드를 움직이는 이유는, VR strict worker가 `head_joint1` 이 **`[-0.2317, 0.6951] rad`** 밖에 있으면 로봇 상태를 전부 거부하기 때문입니다. 팔·리프트·베이스는 건드리지 않습니다.
+`worker_bringup_teleop` 이 헤드를 움직이는 이유는, strict JSON worker가 `head_joint1` 이 **`[-0.2317, 0.6951] rad`** 밖에 있으면 로봇 상태를 전부 거부하기 때문입니다. 팔·리프트·베이스는 건드리지 않습니다.
 
 - 헤드도 그대로 두기: `worker_bringup_teleop init_head:=false`
 - 전부 초기 자세로: `worker_bringup_teleop init_position:=true`
-
-`worker_outbound` · `worker_inbound` 는 **환경 변수가 파이프라인마다 달라서** 각 문서에서 안내합니다. 특히 `SG2_FIXED_QUEST` 값을 틀리면 로봇이 명령을 받지 못합니다.
 :::
 
-| 파이프라인 | bringup | outbound · inbound |
+### outbound · inbound 는 모든 파이프라인이 같은 JSON worker를 씁니다
+
+VR · Joint · EEF · Base · 정책 추론이 모두 `VR_teleoperation/package/worker/` 의 **strict JSON worker** 하나를 공유합니다. `SG2_FIXED_QUEST` 는 지정하지 않아도 JSON(`1`)이 기본값이지만, 터미널에 예전 값이 남아 있을 수 있으니 **항상 `SG2_FIXED_QUEST=1` 을 명시**해서 띄웁니다.
+
+```bash title="Orin 컨테이너 — 모든 파이프라인 공통"
+SG2_FIXED_QUEST=1 worker_outbound_meta                        # 카메라가 필요 없으면 worker_outbound
+SG2_FIXED_QUEST=1 SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
+```
+
+- `SG2_FIXED_QUEST=0` 은 예전 pickle 방식입니다. 현재 노트북은 이 모드로 통신하지 못하니 **쓰지 않습니다.**
+- 이미 떠 있는 worker의 터미널에 뒤늦게 `export` 해도 모드는 바뀌지 않습니다. 명령 앞에 붙여서 새로 띄웁니다.
+- 로봇 제어 세션은 **한 번에 하나만** 가질 수 있습니다. VR·마커·베이스·정책 노트북을 동시에 켜지 말고, 다른 노트북은 `OFF`/`STOP` 한 뒤 시작합니다.
+
+| 파이프라인 | bringup | outbound |
 | --- | --- | --- |
-| [Interactive Marker](../4_interactive-marker/interactive-marker.md) | `worker_bringup` | `SG2_FIXED_QUEST` **없이** |
-| [VR Teleoperation](../5_vr-teleoperation/3_run.md) | `worker_bringup_teleop` | `SG2_FIXED_QUEST=1` |
+| [Interactive Marker](../4_interactive-marker/interactive-marker.md) | `worker_bringup` | `worker_outbound` |
+| [VR Teleoperation](../5_vr-teleoperation/3_run.md) | `worker_bringup_teleop` | `worker_outbound_meta` (카메라 녹화) |
+| [베이스 이동](../5_vr-teleoperation/3_run.md#베이스-이동-키보드) | `worker_bringup_teleop` | `worker_outbound` |
+| [Policy Inference](../6_policy-inference/policy-inference.md) | `worker_bringup_teleop` | `worker_outbound_meta` (정책 입력 카메라) |
 
 ### ROBOTIS 공식 launch 옵션
 
@@ -119,7 +132,8 @@ LG2는 실행 후 **양손 트리거를 2초 이상** 눌러야 follower가 움�
 zmq/outbound.py              ← 로봇 → 맥북 관절 (:5560), --meta 로 카메라도
 zmq/camera_outbound.py       ← 카메라 3대 (:5570 head / :5571 wrist_left / :5572 wrist_right)
 zmq/inbound.py               ← 맥북 → 로봇 명령 (:5561)
-zmq/fixed_quest_protocol.py  ← 명령 안전 규칙 (SG2_FIXED_QUEST=1 일 때)
+zmq/fixed_quest_protocol.py  ← 명령 안전 규칙 (JSON 모드, 기본값)
+zmq/freedrive.py             ← 토크 on/off (프리드라이브)
 zmq/_old/                    ← 수정 전 백업
 scripts/worker_aliases.sh    ← worker_* 명령 정의
 ffw_bringup/launch/ffw_sg2_teleop.launch.py  ← worker_bringup_teleop
@@ -143,9 +157,11 @@ ffw_bringup/launch/ffw_sg2_teleop.launch.py  ← worker_bringup_teleop
 | Orin 접속 안 됨 (`No route to host`) | 로봇 전원, 부팅 대기(1~2분), 랜선 확인 |
 | 카메라가 안 잡힘 | `launch_cameras:=false` 로 켰거나 카메라 연결 불량 |
 | 로봇이 두 곳에서 명령을 받는 듯 흔들림 | 다른 텔레옵 경로(ROBOTIS VR, LG2 리더)가 켜져 있음. 하나만 남기고 종료 |
+| 노트북이 `invalid_json_feedback` · `protocol_mismatch_legacy_pickle` | worker가 pickle 모드(`SG2_FIXED_QUEST=0`)로 떠 있음. 두 worker를 `SG2_FIXED_QUEST=1` 로 다시 띄움 |
 
 ## 관련 문서
 
 - [환경 구축](./1_setup.md)
 - [로봇 종료](./3_robot-exit.md)
+- [프리드라이브](./4_freedrive.md)
 - [AI WORKER 개요](../1_ai-worker/1_overview.md)

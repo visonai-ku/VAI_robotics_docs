@@ -6,7 +6,7 @@ title: 로봇 종료
 # 로봇 종료
 
 :::info[시작 전 확인]
-- [ ] 텔레옵 세션을 먼저 끝냈는가 — [VR 세션 종료](../5_vr-teleoperation/3_run.md) 또는 노트북 `Robot` `OFF`
+- [ ] 제어 세션을 먼저 끝냈는가 — [VR 세션 종료](../5_vr-teleoperation/3_run.md), 마커·베이스 노트북 `Robot` `OFF`, [정책 추론](../6_policy-inference/policy-inference.md) 셀 종료
 - [ ] 팔이 물체를 쥐고 있지 않은가
 - [ ] 로봇 주변에 사람이 없는가
 :::

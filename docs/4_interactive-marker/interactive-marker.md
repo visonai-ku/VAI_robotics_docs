@@ -12,7 +12,7 @@ VR 없이 **마우스로 마커를 끌어서** FFW-SG2의 팔을 움직이는 �
 :::
 
 :::info[시작 전 확인]
-- [ ] [환경 구축](../3_pipeline/1_setup.md) 완료 — conda 환경 `ri_motion_v5_env` + **`ri_motion_v5_package` 설치**
+- [ ] [환경 구축](../3_pipeline/1_setup.md) 완료 — conda 환경 `ri_motion_v5_py312` + **Xcode Command Line Tools** (IK 모듈 빌드용)
 - [ ] [로봇 구동](../3_pipeline/2_robot-start.md) 완료 — 전원·E-STOP 해제 후 `worker_bringup`
 - [ ] Orin 컨테이너 접속 상태 (`docker exec -it ai_worker bash`)
 :::
@@ -32,16 +32,18 @@ worker_bringup
 ```
 
 ```bash title="터미널 2 — 로봇 → 맥북 (현재 state)"
-worker_outbound
+SG2_FIXED_QUEST=1 worker_outbound
 ```
 
 ```bash title="터미널 3 — 맥북 → 로봇 (목표 state)"
-worker_inbound
+SG2_FIXED_QUEST=1 SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
 ```
 
-:::warning[`SG2_FIXED_QUEST` 값에 주의]
-인터랙티브 마커는 `SG2_FIXED_QUEST=1` 이면 **동작하지 않습니다.** 이 값은 VR 파이프라인 전용 안전 규칙(`zmq/fixed_quest_protocol.py`)을 켜기 때문입니다.
-마커를 쓸 때는 `SG2_FIXED_QUEST=0` 으로 두거나 환경 변수를 주지 않고 실행하세요.
+:::warning[VR과 같은 JSON worker를 씁니다]
+Joint/EEF 노트북도 VR Teleoperation과 같은 **strict JSON worker**로 통신합니다. JSON이 기본값이지만 남아 있는 환경 변수를 덮어쓰도록 `SG2_FIXED_QUEST=1` 을 붙여 띄웁니다.
+**`SG2_FIXED_QUEST=0` 으로 띄우면 동작하지 않습니다.** (예전 pickle 방식)
+
+로봇 제어 세션은 한 번에 하나만 가질 수 있으니, VR·베이스·정책 노트북은 먼저 `STOP`/`OFF` 하세요.
 :::
 
 :::tip[실행 순서]
@@ -51,26 +53,17 @@ worker_inbound
 
 ## IP 설정
 
-맥북 IP는 DHCP라 바뀝니다. Orin 쪽 설정을 현재 맥북 IP로 맞춥니다.
+맥북 IP는 DHCP라 바뀝니다. inbound를 띄울 때 `SG2_ZMQ_SUB_IP` 로 현재 맥북 IP를 넘깁니다 (위 터미널 3).
 
-- 경로: `~/ai_worker/zmq/inbound.py`
-
-```python title="~/ai_worker/zmq/inbound.py"
-ZMQ_SUB_IP = os.environ.get("SG2_ZMQ_SUB_IP", "맥북IP")
-```
-
-환경 변수로 넘기는 편이 더 간단합니다.
-
-```bash
-SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
-```
+맥북 IP는 노트북의 통신 설정 셀(셀 3)이 `PUB_TO_SG2_IP` 로 출력합니다. IP가 바뀌면 inbound를 새 값으로 다시 띄웁니다.
 
 ## 노트북 실행
 
-Jupyter 커널을 **`ri_motion_v5_env`** 로 선택한 뒤 실행합니다.
+Jupyter 커널을 **`ri_motion_v5_py312`** 로 선택하고, 새 커널에서 첫 셀부터 실행합니다.
 
-노트북은 모두 `ri_motion_v5_VR/project/ffw_sg2_vr_teleoperation/` 아래에 있습니다.
-VR Teleoperation이 쓰는 `VR_teleoperation/` 폴더와는 **다른 폴더**이니 주의하세요.
+노트북 파일은 `ri_motion_v5_VR/project/ffw_sg2_vr_teleoperation/` 아래에 있습니다. 위치는 그대로지만, 코드·로봇 모델·worker 통신은 VR Teleoperation과 같은 `VR_teleoperation/` 공통 런타임을 불러 씁니다.
+
+셀 2가 C++ IK·충돌 거리 모듈을 현재 Python에 맞게 빌드합니다. 처음 실행할 때는 시간이 걸리고, 빌드에 실패하면 예외를 내고 멈춥니다 (Xcode Command Line Tools 확인).
 
 | 노트북 | 조작 단위 |
 | --- | --- |
@@ -81,8 +74,10 @@ VR Teleoperation이 쓰는 `VR_teleoperation/` 폴더와는 **다른 폴더**이
 
 기즈모는 힌지 관절에는 축을 감싸는 **링**, `lift_joint` 에는 슬라이드를 따라가는 **화살표**로 붙습니다. 색은 그룹별로 arm_l 파랑 · arm_r 주황 · lift/head/gripper 초록입니다.
 
-1. **셀 5** 가 로봇의 현재 관절 상태를 받아 시뮬 자세를 맞춥니다. 마커는 다음 셀에서 이 자세 위에 생기므로 **이 셀이 먼저 성공해야 합니다.** 실행 중 로봇과 어긋난 느낌이 들면 셀 5만 다시 실행해 재동기화합니다.
+1. **셀 5** 가 로봇의 현재 관절 상태를 받아 시뮬 자세를 맞춥니다. 마커는 다음 셀에서 이 자세 위에 생기므로 **이 셀이 먼저 성공해야 합니다.**
 2. `Robot` 은 `OFF` 로 시작합니다. 마커가 예상한 자리에 있는 것을 확인한 뒤에만 `ON` 으로 바꿉니다.
+3. `ON` 으로 바꾸면 마커·슬라이더를 **현재 실측 자세로 다시 동기화**하고, 로봇 bridge의 ACK를 기다립니다(`ARMING`). ARMING이 끝난 뒤에 조작합니다.
+4. `OFF` 로 바꾸면 명령 세션과 5561 포트를 반납합니다. 오류가 나면 `OFF` → `ON` 으로 다시 시작합니다.
 
 :::warning[속도 제한과 Preset 주의]
 - 모든 명령은 **힌지 60°/s, 리프트 0.05 m/s** 로 램프됩니다. 마커를 끄는 동작은 이 한계에 닿지 않지만, `Preset` 이나 `File` 로드는 램프가 없으면 팔 전체가 한 번에 휘두르는 동작이 됩니다. 램프가 도는 동안 화면에 `RATE LIMITED` 가 표시되고, MuJoCo는 마커가 아니라 **실제로 보낸 명령**을 보여줍니다.
@@ -98,7 +93,8 @@ E-stop을 누를 사람을 반드시 옆에 두세요.
 1. 기즈모 두 개(손목마다 하나)를 마우스로 끌어 좌/우 팔 목표를 옮깁니다.
 2. 기즈모를 **Shift+클릭** 하면 회전 모드로 바뀝니다.
 3. 두 손목 목표는 **하나의 충돌 인식 IK** 로 함께 풀려 로봇에 전달됩니다.
-4. `Robot command` 는 `OFF` 로 시작합니다. 기즈모가 손목 위에 정확히 올라온 뒤 `ON` 으로 바꿉니다.
+4. `Robot command` 는 `OFF` 로 시작합니다. 기즈모가 손목 위에 정확히 올라온 뒤 `ON` 으로 바꿉니다. `ON` 은 Joint controller와 마찬가지로 현재 실측 자세로 동기화한 뒤 ACK를 기다리고(`ARMING`), 오류 뒤에는 `OFF` → `ON` 으로 다시 시작합니다.
+   - EEF controller는 **팔·그리퍼만** 제어합니다. 헤드와 리프트는 `ON` 할 때의 측정 자세를 그대로 유지합니다.
 5. `Marker` → `RESET` 을 누르면 기즈모가 현재 SG2 손목 위치로 되돌아간 뒤 `TRACK` 으로 복귀합니다.
 6. 그리퍼는 별도 슬라이더로 여닫습니다.
 
@@ -118,12 +114,14 @@ worker_shutdown
 
 | 증상 | 원인 / 해결 |
 | --- | --- |
-| 마커를 끌어도 로봇이 안 움직임 | `SG2_FIXED_QUEST=1` 로 실행됨. `0` 으로 두고 inbound 재시작 |
+| 마커를 끌어도 로봇이 안 움직임 | `ARMING` 이 끝나지 않았거나 다른 노트북이 제어 세션을 쥐고 있음. 다른 노트북 STOP 후 `OFF` → `ON` |
+| `invalid_json_feedback` · `protocol_mismatch_legacy_pickle` | worker가 `SG2_FIXED_QUEST=0`(pickle)로 떠 있음. 두 worker를 `SG2_FIXED_QUEST=1` 로 재시작 |
 | 목표를 줘도 팔이 반응 없음 | inbound의 `SG2_ZMQ_SUB_IP` 가 현재 맥북 IP와 다름 |
+| 셀 2에서 빌드 오류 | 컴파일러 없음. `xcode-select --install` 후 커널 재시작 |
 | 관절에 힘이 없음 | torque-off 상태. Remote E-STOP **A 버튼** |
-| 마커가 로봇 자세와 어긋나 있음 | 셀 5(로봇 상태 동기화)를 다시 실행해 재동기화 |
+| 마커가 로봇 자세와 어긋나 있음 | `Robot` 을 `OFF` → `ON` 으로 바꾸면 실측 자세로 다시 동기화됨 |
 | `RATE LIMITED` 가 계속 떠 있음 | `Preset`·`File` 로 큰 목표가 들어가 램프가 도는 중. 끝날 때까지 기다리거나 `sync` 로 마커를 현재 자세에 다시 붙임 |
-| `PUB_TO_SG2_IP` 를 맞췄는데도 반응 없음 | 로봇 `inbound.py` 의 `ZMQ_SUB_IP` 와 값이 같은지, inbound를 재시작했는지 확인 |
+| `PUB_TO_SG2_IP` 를 맞췄는데도 반응 없음 | inbound를 띄울 때 넘긴 `SG2_ZMQ_SUB_IP` 와 값이 같은지, 바꾼 뒤 inbound를 재시작했는지 확인 |
 | 로봇이 흔들림 | VR 파이프라인이나 LG2 리더가 동시에 켜져 있음. 하나만 남기기 |
 
 :::note[TODO]
@@ -133,4 +131,4 @@ worker_shutdown
 ## 관련 문서
 
 - [AI WORKER 로봇 구동](../3_pipeline/2_robot-start.md)
-- [VR Teleoperation 환경 구축](../5_vr-teleoperation/1_overview.md)
+- [VR Teleoperation 개요](../5_vr-teleoperation/1_overview.md)

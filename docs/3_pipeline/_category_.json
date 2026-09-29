@@ -3,6 +3,6 @@
   "position": 4,
   "link": {
     "type": "generated-index",
-    "description": "Interactive Marker와 VR Teleoperation에 공통으로 필요한 환경 구축과 로봇 구동·종료 절차입니다."
+    "description": "Interactive Marker, VR Teleoperation, Policy Inference에 공통으로 필요한 환경 구축, 로봇 구동·종료, 프리드라이브 절차입니다."
   }
 }

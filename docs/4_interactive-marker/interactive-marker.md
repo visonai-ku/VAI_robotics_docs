@@ -104,11 +104,13 @@ E-stop을 누를 사람을 반드시 옆에 두세요.
 
 ## 종료
 
+`Robot command` 를 `OFF` 로 바꾸기 전에 두 팔을 **책상 위 영역**으로 옮겨 둡니다. 현재 `worker_shutdown` 은 버그 수정 전이라 팔이 책상 위 영역에 있을 때만 씁니다.
+
 ```bash
 worker_shutdown
 ```
 
-`completed` 로그를 확인한 뒤 **inbound → outbound → bringup** 순으로 종료합니다.
+`completed` 로그를 확인한 뒤, inbound가 아직 떠 있으면 `Ctrl+C` 로 끄고 **outbound → bringup** 순으로 종료합니다. 자세한 절차는 [로봇 종료](../3_pipeline/3_robot-exit.md)를 참고하세요.
 
 ## 자주 겪는 문제
 

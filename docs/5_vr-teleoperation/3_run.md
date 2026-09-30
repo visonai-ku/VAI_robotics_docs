@@ -233,8 +233,8 @@ SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
 
 1. 오른쪽 **B 1초** (초기 자세로 정리) → 컨트롤 창 `Run → STOP`
 2. 맥북: 셀이 끝나면 녹화 중이던 에피소드가 저장되고 데이터셋이 마무리(finalize)됩니다. 마무리 메시지가 나올 때까지 기다리세요.
-3. Orin 터미널 3개: 각각 `Ctrl+C` (**inbound → outbound → bringup** 순)
-4. 팔을 접어 두려면 Orin에서 `worker_shutdown`
+3. 팔을 접어 두려면 두 팔이 **책상 위 영역**에 있는지 확인한 뒤 Orin에서 `worker_shutdown` 을 실행합니다. 버그 수정 전이라 책상 위 영역 밖에서는 쓰지 않습니다.
+4. Orin 터미널: inbound가 아직 떠 있으면 `Ctrl+C` 한 뒤 **outbound → bringup** 순으로 `Ctrl+C`
 
 전원까지 내리는 절차는 [AI WORKER 로봇 종료](../3_pipeline/3_robot-exit.md)를 참고하세요.
 

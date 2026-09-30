@@ -6,8 +6,9 @@ title: 초기 설정 및 사용법
 # Meta Quest 3 초기 설정 및 사용법
 
 :::note
-기기를 처음 받았을 때의 설정과, 세션마다 반복하게 되는 기본 사용법입니다.
+1. 기기를 처음 받았을 때의 설정과, 세션마다 반복하게 되는 기본 사용법입니다.
 항목별 공식 안내는 [Meta Quest 3 시작하기](https://www.meta.com/ko-kr/help/quest/1994971530885728/)에 정리되어 있습니다.
+2. 초기 설정이 이미 되어있다면 [5번 섹션](https://visonai-ku.github.io/VAI_robotics_docs/docs/meta-quest-3/setup#5-%EB%B8%8C%EB%9D%BC%EC%9A%B0%EC%A0%80%EB%A1%9C-%ED%85%94%EB%A0%88%EC%98%B5-%ED%8E%98%EC%9D%B4%EC%A7%80-%EC%A0%91%EC%86%8D)부터 시작하세요.
 :::
 
 ## 준비물

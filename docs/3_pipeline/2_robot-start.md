@@ -79,7 +79,7 @@ worker_bringup
 | `worker_bringup_lg2` | 물리 리더(FFW-LG2)를 쓸 때. follower 초기 자세 이동 후 **30초 뒤** 리더 시작 |
 | `worker_outbound` | 관절 상태 (:5560) + 카메라 3대 (:5570~5572) 전송 |
 | `worker_inbound` | 맥북 명령 수신 (:5561) — 팔·그리퍼·리프트·헤드·베이스 공통 |
-| `worker_shutdown` | 팔 접기 — `scripts/ffw_sg2_shutdown.sh` 실행. **팔이 책상 위 영역에 있을 때만** 사용. 실행 후 inbound가 남아 있으면 `Ctrl+C` ([로봇 종료](./3_robot-exit.md) 참고) |
+| `worker_shutdown` | 팔 접기 — `scripts/ffw_sg2_shutdown.sh` 실행. **팔이 책상 위 영역에 있을 때만** 사용 (책상 아래라면 쓰지 않고 inbound → outbound → bringup 순으로 종료). 실행 후 inbound가 남아 있으면 `Ctrl+C` ([로봇 종료](./3_robot-exit.md) 참고) |
 
 :::warning[`init_head:=false` 는 헤드 위치를 확인하고 씁니다]
 `init_position:=false` 에서도 헤드를 옮기는 이유는, strict JSON worker가 `head_joint1` 이 **`[-0.2317, 0.6951] rad`** 밖에 있으면 로봇 상태를 전부 거부하기 때문입니다. 헤드가 이 범위 밖에 있을 때 `init_head:=false` 로 켜면 노트북이 로봇 피드백을 받지 못합니다.

@@ -19,7 +19,7 @@ title: 로봇 종료
 자세 정리 → worker_shutdown → inbound 확인(남아 있으면 Ctrl+C) → outbound → bringup Ctrl+C → 전원 OFF
 ```
 
-1. **자세 정리** — 팔이 펼쳐진 상태라면 먼저 안전한 자세로 모읍니다. VR 세션 중이라면 오른쪽 컨트롤러 **B 버튼 1초**로 초기 자세로 돌립니다. 이때 두 팔이 **책상 위 영역**에 있어야 다음 단계를 진행할 수 있습니다.
+1. **자세 정리** — 팔이 펼쳐진 상태라면 먼저 안전한 자세로 모읍니다. VR 세션 중이라면 오른쪽 컨트롤러 **B 버튼 1초**로 초기 자세로 돌립니다. 이때 두 팔이 **책상 위 영역**에 있어야 다음 단계를 진행할 수 있습니다. 팔이 책상 아래에 있다면 2~3단계를 건너뛰고 **inbound → outbound → bringup** 순서로 `Ctrl+C` 합니다.
 2. **팔 접기** — Orin 컨테이너에서 `worker_shutdown` 을 실행합니다.
 
    ```bash title="Orin 컨테이너"
@@ -33,7 +33,9 @@ title: 로봇 종료
 6. **충전** — 다음 사용을 위해 `Charge Port` 에 충전기를 연결합니다.
 
 :::danger[`worker_shutdown` 은 팔이 책상 위 영역에 있을 때만 실행합니다]
-현재 `worker_shutdown` 에는 아직 수정되지 않은 버그가 있어, 팔이 책상 위 영역을 벗어난 상태에서는 안전하게 동작한다고 보장할 수 없습니다. (현재 수정 중, 261001) 팔이 책상 아래나 바깥에 있다면 먼저 VR·마커로 두 팔을 책상 위로 옮긴 뒤 실행하세요.
+현재 `worker_shutdown` 에는 아직 수정되지 않은 버그가 있어, 팔이 책상 위 영역을 벗어난 상태에서는 안전하게 동작한다고 보장할 수 없습니다. (현재 수정 중, 261001) 팔이 책상 아래에 있을 때는 `worker_shutdown` 을 쓰지 말고 **inbound → outbound → bringup** 순서로 `Ctrl+C` 합니다.
+
+bringup을 끄면 토크가 풀려 **팔이 아래로 떨어집니다.** 팔 아래에 손·물체가 없는지 확인한 뒤 끄세요.
 :::
 
 :::warning[순서를 지키세요]
@@ -49,7 +51,7 @@ bringup을 먼저 내리면 `worker_shutdown` 이 팔을 움직일 수 없습니
 
 ## 종료 체크리스트
 
-- [ ] `worker_shutdown` 전에 두 팔이 책상 위 영역에 있었는가
+- [ ] `worker_shutdown` 전에 두 팔이 책상 위 영역에 있었는가 (책상 아래였다면 `worker_shutdown` 없이 inbound → outbound → bringup 순으로 종료)
 - [ ] 팔이 안전한 자세로 접혔는가 (`worker_shutdown` completed 로그 확인)
 - [ ] inbound가 꺼졌는지 확인하고, outbound → bringup 순으로 노드를 종료했는가
 - [ ] 로봇 주변에 사람이 없는 상태에서 전원을 내렸는가

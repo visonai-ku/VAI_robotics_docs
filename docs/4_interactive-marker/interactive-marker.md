@@ -104,7 +104,7 @@ E-stop을 누를 사람을 반드시 옆에 두세요.
 
 ## 종료
 
-`Robot command` 를 `OFF` 로 바꾸기 전에 두 팔을 **책상 위 영역**으로 옮겨 둡니다. 현재 `worker_shutdown` 은 버그 수정 전이라 팔이 책상 위 영역에 있을 때만 씁니다.
+현재 `worker_shutdown` 은 버그 수정 전이라 팔이 **책상 위 영역**에 있을 때만 씁니다. 팔이 책상 아래에 있다면 `worker_shutdown` 없이 **inbound → outbound → bringup** 순으로 `Ctrl+C` 합니다. bringup을 끄면 토크가 풀려 팔이 아래로 떨어지니 팔 아래를 비워 두세요.
 
 ```bash
 worker_shutdown

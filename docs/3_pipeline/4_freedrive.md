@@ -50,7 +50,7 @@ python scripts/live_fk_monitor.py --robot-ip 192.168.6.2
 python scripts/live_fk_monitor.py --robot-ip 192.168.6.2 --rate 10   # 출력 주기 변경
 ```
 
-- Orin에서 outbound(`SG2_FIXED_QUEST=1 worker_outbound`)가 떠 있어야 합니다.
+- Orin에서 outbound(`worker_outbound`)가 떠 있어야 합니다.
 - 양손 손목 끝의 x / y / z 가 로봇 base 좌표(m)로 계속 출력됩니다. 기록하고 싶은 자세에서 값을 그대로 읽으면 됩니다.
 - 이 좌표는 정책 추론의 safety box가 검사하는 점과 **같은 점**입니다. 그리퍼를 바꿨다면 경계를 다시 재야 합니다.
 
@@ -61,7 +61,7 @@ python scripts/live_fk_monitor.py --robot-ip 192.168.6.2 --rate 10   # 출력 �
 | `Service ... not available after 5.0s` | bringup이 떠 있지 않음. [로봇 구동](./2_robot-start.md)부터 |
 | `Service call timed out` | 컨트롤러 스택이 응답하지 않음. bringup 로그 확인 후 다시 실행 |
 | `off` 했는데 팔이 뻣뻣함 | 서비스 호출이 실패함. 로그의 `success=` · `message=` 값 확인 |
-| live FK monitor에 값이 안 나옴 | outbound가 꺼져 있음. `SG2_FIXED_QUEST=1 worker_outbound` 실행 |
+| live FK monitor에 값이 안 나옴 | outbound가 꺼져 있음. `worker_outbound` 실행 |
 
 ## 관련 문서
 

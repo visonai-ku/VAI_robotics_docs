@@ -44,11 +44,11 @@ worker_bringup_teleop
 ```
 
 ```bash title="터미널 2 — 로봇 → 맥북 (관절 + 카메라 3대)"
-SG2_FIXED_QUEST=1 worker_outbound_meta
+worker_outbound
 ```
 
 ```bash title="터미널 3 — 맥북 → 로봇 (명령)"
-SG2_FIXED_QUEST=1 SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
+SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
 ```
 
 `<맥북 IP>` 는 아래 ②의 노트북 설정 셀이 알려줍니다.
@@ -56,11 +56,11 @@ SG2_FIXED_QUEST=1 SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
 - `worker_bringup_teleop` 은 켤 때 **헤드만** `[0, 0]` 으로 움직이고 팔·리프트·베이스는 그대로 둡니다. (헤드가 범위를 벗어나 있으면 worker가 로봇 상태를 거부하기 때문)
   - 헤드도 그대로: `worker_bringup_teleop init_head:=false`
   - 전부 초기 자세로: `worker_bringup_teleop init_position:=true`
-- outbound 시작 로그는 `Protocol: strict JSON with source freshness`, inbound는 `Protocol: strict JSON; explicit arm required` 여야 합니다. `legacy pickle` 이 보이면 `SG2_FIXED_QUEST=1` 을 붙여 다시 띄웁니다.
+- outbound 시작 로그는 `Protocol: strict JSON with source freshness`, inbound는 `Protocol: strict JSON; explicit arm required` 여야 합니다. `legacy pickle` 이 보이면 `unset SG2_FIXED_QUEST` 후 다시 띄웁니다.
 - inbound 시작 로그에 `home 100.0 deg/s` 가 보여야 합니다. (B 버튼 reset pose 속도)
 
 :::warning
-worker는 `SG2_FIXED_QUEST` 를 주지 않아도 JSON으로 뜨지만, 터미널에 예전 값(`0`)이 남아 있으면 pickle 모드로 떠서 노트북과 통신하지 못합니다. **`SG2_FIXED_QUEST=1` 을 항상 붙이세요.**
+worker는 `SG2_FIXED_QUEST` 를 주지 않아도 JSON으로 뜹니다. 다만 환경에 `SG2_FIXED_QUEST=0` 이 남아 있으면 pickle 모드로 떠서 노트북과 통신하지 못하니 `unset SG2_FIXED_QUEST` 하세요.
 `SG2_ZMQ_SUB_IP` 를 빼먹으면 로봇이 명령을 받지 못합니다. `command not found` 가 나오면 `source ~/.bashrc` 후 다시 실행하세요.
 :::
 
@@ -175,8 +175,8 @@ grip당 20cm 작업범위와 속도 제한도 두 모드가 같습니다.
 
 ```bash title="Orin 준비"
 worker_bringup_teleop
-SG2_FIXED_QUEST=1 worker_outbound
-SG2_FIXED_QUEST=1 SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
+worker_outbound
+SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
 ```
 
 1. `SG2 Base Command` 창에서 `Speed` 를 **`SLOW`** 로 바꿉니다. (창은 `NORMAL` 로 시작합니다)

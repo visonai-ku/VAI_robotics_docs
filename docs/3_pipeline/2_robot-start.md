@@ -8,7 +8,6 @@ title: 로봇 구동
 :::info[시작 전 확인]
 - [ ] [환경 구축](./1_setup.md) 완료 — conda 환경 `ri_motion_v5_py312`, 저장소 clone, SSH 설정
 - [ ] 로봇 작업 반경에 사람·장애물 없음, **E-stop 담당자 1명 대기**
-- [ ] 로봇 worker가 최신 버전인가 — inbound 시작 로그에 `Protocol: strict JSON; explicit arm required` 와 `home 100.0 deg/s`
 :::
 
 전원을 넣고 ROS 2 노드가 올라오는 **bringup**까지의 절차입니다. 여기까지 끝나면 [Interactive Marker](../4_interactive-marker/interactive-marker.md), [VR Teleoperation](../5_vr-teleoperation/3_run.md), [Policy Inference](../6_policy-inference/policy-inference.md) 중 하나로 넘어갑니다.

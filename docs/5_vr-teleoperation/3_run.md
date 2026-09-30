@@ -7,7 +7,6 @@ title: 실행
 
 :::info[시작 전 확인]
 - [ ] [환경 구축](../3_pipeline/1_setup.md) 완료 — conda 환경 `ri_motion_v5_py312`, 커널 등록
-- [ ] 로봇 worker가 최신 버전인가 — inbound 시작 로그에 `Protocol: strict JSON; explicit arm required` 와 `arm 120 deg/s, gripper 120 deg/s, home 100.0 deg/s`
 - [ ] Quest가 Wi-Fi `AIWORKER1115` 에 연결되어 있고, 맥북도 192.168.6.x 네트워크에 있음
 :::
 
@@ -57,7 +56,6 @@ SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
   - 팔을 올리면 안 될 때: `worker_bringup init_position:=false` (헤드만 초기 자세로 이동)
   - 자세한 옵션은 [로봇 구동](../3_pipeline/2_robot-start.md#worker_-명령-정리) 참고
 - outbound 시작 로그는 `Protocol: strict JSON with source freshness`, inbound는 `Protocol: strict JSON; explicit arm required` 여야 합니다. `legacy pickle` 이 보이면 `unset SG2_FIXED_QUEST` 후 다시 띄웁니다.
-- inbound 시작 로그에 `home 100.0 deg/s` 가 보여야 합니다. (B 버튼 reset pose 속도)
 
 :::warning
 worker는 `SG2_FIXED_QUEST` 를 주지 않아도 JSON으로 뜹니다. 다만 환경에 `SG2_FIXED_QUEST=0` 이 남아 있으면 pickle 모드로 떠서 노트북과 통신하지 못하니 `unset SG2_FIXED_QUEST` 하세요.
@@ -72,7 +70,7 @@ worker는 `SG2_FIXED_QUEST` 를 주지 않아도 JSON으로 뜹니다. 다만 �
 4. 설정 셀 출력의 IP를 확인합니다. 이 IP로 ①의 터미널 3과 ③의 Quest 주소를 맞춥니다.
 
    ```
-   PC IP: 192.168.6.102 → Quest: https://192.168.6.102:8443/ | Orin: SG2_FIXED_QUEST=1 SG2_ZMQ_SUB_IP=192.168.6.102 worker_inbound
+   PC IP: 192.168.6.102 → Quest: https://192.168.6.102:8443/ | Orin: SG2_ZMQ_SUB_IP=192.168.6.102 worker_inbound
    ```
 
 5. 마지막 실행 셀을 실행하면 **MuJoCo 화면 / 컨트롤 창 / SG2 Record 창** 이 뜹니다. **이 셀이 돌아가는 동안에만** Quest 페이지가 열립니다.

@@ -56,10 +56,6 @@ git clone https://github.com/jaehoondata/VAI_AIWORKER
 
 VR Teleoperation, Interactive Marker, 베이스, 정책 추론 노트북은 모두 **Python 3.12 / LeRobot 0.6.1** 환경 `ri_motion_v5_py312` 하나를 씁니다. 예전 `ri_motion_v5_env`(Python 3.10, LeRobot 0.4.4)에서는 녹화와 정책 추론이 동작하지 않습니다.
 
-:::warning[Apple Silicon 맥만 됩니다]
-LeRobot 0.6.1은 PyTorch 2.7 이상이 필요한데, Intel Mac용 PyTorch는 2.2까지만 나와 있습니다. Intel Mac에서는 이 환경을 만들 수 없습니다.
-:::
-
 저장소에 검증된 환경 파일(`environments/ri_motion_v5_py312.macos-arm64.yml`)이 있으니 그대로 복원합니다.
 
 ```bash title="VAI_AIWORKER 저장소 루트에서"

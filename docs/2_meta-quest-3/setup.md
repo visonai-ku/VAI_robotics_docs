@@ -57,6 +57,7 @@ QR 코드로도 Wi-Fi를 연결할 수 있습니다. 비밀번호 입력이 번�
 
 ## 5. 브라우저로 텔레옵 페이지 접속
 
+0. [로봇 VR Teleoperation 설정)(https://visonai-ku.github.io/VAI_robotics_docs/docs/vr-teleoperation/run#-%EB%A7%A5%EB%B6%81--%EB%85%B8%ED%8A%B8%EB%B6%81-%EC%8B%A4%ED%96%89)을 완료합니다.  
 1. 헤드셋에서 **브라우저**를 엽니다.
 2. 주소창에 직접 입력합니다: `https://<맥북 IP>:8443/`
    - `https://` 와 `:8443` 이 모두 필요합니다.

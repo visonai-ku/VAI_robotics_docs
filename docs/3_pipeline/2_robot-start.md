@@ -66,6 +66,12 @@ worker_bringup
 `ffw_sg2_ai.launch.py` 는 **Leader(FFW-LG2) + Follower 동시 실행**입니다. LG2를 쓰지 않는다면 `worker_bringup_teleop` 쪽이 맞습니다.
 :::
 
+:::danger[bringup 종료 시 바로 ctrl+c 하지 말기]
+Bringup 프로세스를 ctrl+c로 종료할 경우 로봇이 현재 상태에서 서서히 관절들의 힘을 풀어버립니다.
+이 경우 워크스테이션에 로봇 팔이 직접 충돌하고, 로봇 팔이 책상을 계속 짓누르는 상태가 됩니다.
+때문에 **아래 `worker_shutdown`을 반드시 먼저 실행시켜서 로봇 팔을 안전한 위치로 옮긴 후, ctrl+c로 프로세스를 종료시켜야합니다.**
+:::
+
 `command not found` 가 뜨면 `source ~/.bashrc` 후 다시 실행합니다.
 
 ### `worker_*` 명령 정리
@@ -91,7 +97,7 @@ VR · Joint · EEF · Base · 정책 추론이 모두 `VR_teleoperation/package/
 
 ```bash title="Orin 컨테이너 — 모든 파이프라인 공통"
 SG2_FIXED_QUEST=1 worker_outbound_meta                        # 카메라가 필요 없으면 worker_outbound
-SG2_FIXED_QUEST=1 SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
+SG2_FIXED_QUEST=1 SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound      # 맥북 ip는 `ipconfig getifaddr en0` 로 구할 수 있습니다.
 ```
 
 - `SG2_FIXED_QUEST=0` 은 예전 pickle 방식입니다. 현재 노트북은 이 모드로 통신하지 못하니 **쓰지 않습니다.**

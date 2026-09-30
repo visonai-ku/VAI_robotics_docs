@@ -43,8 +43,8 @@ python scripts/check_policy_inference.py <checkpoint_path> --device cpu   # 장�
 
 VR Teleoperation과 같은 worker를 씁니다. 정책 입력 카메라도 `worker_outbound` 가 함께 보냅니다.
 
-```bash title="터미널 1 — bringup"
-worker_bringup_teleop
+```bash title="터미널 1 — bringup (초기 자세 이동이 끝날 때까지 대기)"
+worker_bringup
 ```
 
 ```bash title="터미널 2 — 로봇 → 맥북 (관절 + 카메라)"

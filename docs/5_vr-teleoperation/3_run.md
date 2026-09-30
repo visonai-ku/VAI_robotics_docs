@@ -39,8 +39,8 @@ docker exec -it ai_worker bash
 
 컨테이너 안에서 터미널 하나에 하나씩 실행합니다.
 
-```bash title="터미널 1 — bringup"
-worker_bringup_teleop
+```bash title="터미널 1 — bringup (초기 자세 이동이 끝날 때까지 대기)"
+worker_bringup
 ```
 
 ```bash title="터미널 2 — 로봇 → 맥북 (관절 + 카메라 3대)"
@@ -53,9 +53,9 @@ SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
 
 `<맥북 IP>` 는 아래 ②의 노트북 설정 셀이 알려줍니다.
 
-- `worker_bringup_teleop` 은 켤 때 **헤드만** `[0, 0]` 으로 움직이고 팔·리프트·베이스는 그대로 둡니다. (헤드가 범위를 벗어나 있으면 worker가 로봇 상태를 거부하기 때문)
-  - 헤드도 그대로: `worker_bringup_teleop init_head:=false`
-  - 전부 초기 자세로: `worker_bringup_teleop init_position:=true`
+- `worker_bringup` 은 켤 때 **팔·헤드·리프트 전체를 초기 자세로** 옮깁니다. 이동이 끝난 뒤 터미널 2·3을 띄웁니다.
+  - 팔을 올리면 안 될 때: `worker_bringup init_position:=false` (헤드만 초기 자세로 이동)
+  - 자세한 옵션은 [로봇 구동](../3_pipeline/2_robot-start.md#worker_-명령-정리) 참고
 - outbound 시작 로그는 `Protocol: strict JSON with source freshness`, inbound는 `Protocol: strict JSON; explicit arm required` 여야 합니다. `legacy pickle` 이 보이면 `unset SG2_FIXED_QUEST` 후 다시 띄웁니다.
 - inbound 시작 로그에 `home 100.0 deg/s` 가 보여야 합니다. (B 버튼 reset pose 속도)
 
@@ -174,7 +174,7 @@ grip당 20cm 작업범위와 속도 제한도 두 모드가 같습니다.
 ```
 
 ```bash title="Orin 준비"
-worker_bringup_teleop
+worker_bringup
 worker_outbound
 SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
 ```

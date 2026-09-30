@@ -22,7 +22,7 @@ Quest·맥북·로봇이 **모두 같은 네트워크(192.168.6.x)** 에 있어�
 - **맥북**: 로봇 네트워크에 유선 또는 무선으로 연결합니다.
 - **Quest 3**: Wi-Fi `AIWORKER1115` 연결 (PW: `AIWORKER1115`) — [Meta Quest 3 초기 설정](../2_meta-quest-3/setup.md) 참고. VR Teleoperation을 쓸 때만 필요합니다.
 
-## 2. 맥북 → Orin SSH / Docker 접속
+### 1.1. 맥북 → Orin SSH / Docker 접속 설정
 
 `~/.ssh/config` 에 등록해 둡니다.
 
@@ -44,13 +44,15 @@ docker exec -it ai_worker bash
 ssh-copy-id robotis@ffw-SNPR48A1115.local
 ```
 
-## 3. 저장소 받기
+## 2. 저장소 받기
+
+로컬 컴퓨터에 로봇 조종을 위한 코드를 다운받습니다.
 
 ```bash
 git clone https://github.com/jaehoondata/VAI_AIWORKER
 ```
 
-## 4. conda 가상환경과 커널
+## 3. conda 가상환경과 커널
 
 VR Teleoperation, Interactive Marker, 베이스, 정책 추론 노트북은 모두 **Python 3.12 / LeRobot 0.6.1** 환경 `ri_motion_v5_py312` 하나를 씁니다. 예전 `ri_motion_v5_env`(Python 3.10, LeRobot 0.4.4)에서는 녹화와 정책 추론이 동작하지 않습니다.
 
@@ -95,7 +97,7 @@ xcode-select --install
 
 별도의 `pip install` 은 필요 없습니다. Joint/EEF/Base 노트북도 VR Teleoperation과 같은 `VR_teleoperation/` 공통 런타임을 불러 씁니다.
 
-## 5. 커널은 항상 새로 시작
+## 4. 커널은 항상 새로 시작
 
 모든 노트북이 첫 셀에서 `VR_teleoperation/package/init_project.py` 를 실행합니다. 이 스크립트는 `vendor/` 사본을 `sys.path` 앞에 넣어 모듈 경로를 고정합니다. 이때 **프로젝트 폴더 바깥에서 불러온 모듈이 이미 커널에 올라와 있으면 예외를 던지고 멈춥니다.**
 

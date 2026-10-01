@@ -14,7 +14,7 @@ VR 없이 **마우스로 마커를 끌어서** FFW-SG2의 팔을 움직이는 �
 :::info[시작 전 확인]
 - [ ] [환경 구축](../3_pipeline/1_setup.md) 완료 — conda 환경 `ri_motion_v5_py312` + **Xcode Command Line Tools** (IK 모듈 빌드용)
 - [ ] [로봇 구동](../3_pipeline/2_robot-start.md) 완료 — 전원·E-STOP 해제 후 `worker_bringup`
-- [ ] Orin 컨테이너 접속 상태 (`docker exec -it ai_worker bash`)
+- [ ] Orin 컨테이너 접속 상태 (`docker_exec`)
 :::
 
 :::danger[실제 로봇 구동 시 반드시 확인]

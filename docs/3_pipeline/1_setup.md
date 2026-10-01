@@ -35,7 +35,7 @@ Host ffw-SNPR48A1115.local
 
 ```bash title="맥북 터미널"
 ssh robotis@ffw-SNPR48A1115.local     # System password: root
-docker exec -it ai_worker bash
+docker_exec                           # = docker exec -it ai_worker bash
 ```
 
 비밀번호 없이 접속하려면(선택):

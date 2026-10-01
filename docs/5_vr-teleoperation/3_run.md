@@ -33,7 +33,7 @@ bringup → outbound → inbound → 노트북 실행 → 왼쪽 X (녹화 시�
 
 ```bash title="터미널 1 · 2 · 3 공통 — Orin 접속"
 ssh robotis@ffw-SNPR48A1115.local
-docker exec -it ai_worker bash
+docker_exec                           # = docker exec -it ai_worker bash
 ```
 
 컨테이너 안에서 터미널 하나에 하나씩 실행합니다.

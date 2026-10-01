@@ -47,8 +47,10 @@ AI WORKER는 전원을 켠 직후 **torque-off** 상태입니다. DYNAMIXEL과 �
 
 ```bash title="맥북 터미널"
 ssh robotis@ffw-SNPR48A1115.local     # System password: root
-docker exec -it ai_worker bash
+docker_exec                           # = docker exec -it ai_worker bash
 ```
+
+`docker_exec` 는 Orin에 등록된 `docker exec -it ai_worker bash` 단축 명령입니다. `command not found` 가 뜨면 원래 명령을 그대로 입력합니다.
 
 SSH 설정은 [환경 구축](./1_setup.md)에서 미리 해 둡니다.
 

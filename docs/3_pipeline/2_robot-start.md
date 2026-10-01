@@ -69,6 +69,12 @@ worker_bringup
 팔을 올리면 안 되는 상황이라면 `init_position:=false` 로 켭니다.
 :::
 
+:::danger[bringup 종료 시 바로 ctrl+c 하지 말기]
+Bringup 프로세스를 ctrl+c로 종료할 경우 로봇이 현재 상태에서 서서히 관절들의 힘을 풀어버립니다.
+이 경우 워크스테이션에 로봇 팔이 직접 충돌하고, 로봇 팔이 책상을 계속 짓누르는 상태가 됩니다.
+때문에 **아래 `worker_shutdown`을 반드시 먼저 실행시켜서 로봇 팔을 안전한 위치로 옮긴 후, ctrl+c로 프로세스를 종료시켜야합니다.**
+:::
+
 `command not found` 가 뜨면 `source ~/.bashrc` 후 다시 실행합니다.
 
 ### `worker_*` 명령 정리

@@ -6,9 +6,9 @@ title: Interactive Marker로 조작하기
 # Interactive Marker로 FFW-SG2 조작하기
 
 :::note
-VR 없이 **마우스로 마커를 끌어서** FFW-SG2의 팔을 움직이는 방법입니다.
+**마우스로 마커를 조작해서** FFW-SG2의 관절을 움직이는 방법입니다.
 동작 확인, 자세 잡기, IK 테스트처럼 정밀하게 한 번씩 움직여 볼 때 사용합니다.
-연속 조작과 데이터 수집은 [VR Teleoperation](../5_vr-teleoperation/1_overview.md)을 쓰세요.
+연속 조작과 데이터 수집은 [VR Teleoperation](../5_vr-teleoperation/1_overview.md)을 사용하세요.
 :::
 
 :::info[시작 전 확인]
@@ -23,7 +23,12 @@ VR 없이 **마우스로 마커를 끌어서** FFW-SG2의 팔을 움직이는 �
 - **E-stop**: 비상 정지 버튼을 누를 사람 1명을 반드시 대기시킵니다.
 :::
 
-## ROS 노드 실행
+## SSH 접속 및 ROS 노드 실행
+
+```bash title="bash"
+ssh robotis@ffw-SNPR48A1115.local     # System password: root
+docker_exec                           # docker exec -it ai_worker bash
+```
 
 Orin 컨테이너에서 터미널 3개를 씁니다.
 
@@ -39,36 +44,22 @@ worker_outbound
 SG2_ZMQ_SUB_IP=192.168.6.xxx worker_inbound    # 맥북 IP 입력
 ```
 
-:::warning[VR과 같은 JSON worker를 씁니다]
-Joint/EEF 노트북도 VR Teleoperation과 같은 **strict JSON worker**로 통신합니다. JSON이 기본값이라 별도 환경 변수 없이 띄우면 됩니다.
-**`SG2_FIXED_QUEST=0` 이 설정돼 있으면 동작하지 않습니다.** (예전 pickle 방식)
-
-로봇 제어 세션은 한 번에 하나만 가질 수 있으니, VR·베이스·정책 노트북은 먼저 `STOP`/`OFF` 하세요.
+:::warning[노트북은 한 번에 한 개씩만]
+로봇 제어 세션은 한 번에 하나만 동작하니, VR·Base·Policy 노트북이 실행되고 있는지 확인하세요.
 :::
-
-:::tip[실행 순서]
-`worker_outbound` 를 먼저 띄우고 시뮬레이션에서 정상 동작을 확인한 뒤 `worker_inbound` 를 실행합니다.
-실행 전에 각 파일의 IP·포트가 현재 접속 환경과 같은지 확인하세요.
-:::
-
-## IP 설정
-
-맥북 IP는 DHCP라 바뀝니다. inbound를 띄울 때 `SG2_ZMQ_SUB_IP` 로 현재 맥북 IP를 넘깁니다 (위 터미널 3).
-
-맥북 IP는 노트북의 통신 설정 셀(셀 3)이 `PUB_TO_SG2_IP` 로 출력합니다. IP가 바뀌면 inbound를 새 값으로 다시 띄웁니다.
 
 ## 노트북 실행
 
-Jupyter 커널을 **`ri_motion_v5_py312`** 로 선택하고, 새 커널에서 첫 셀부터 실행합니다.
+Jupyter 커널을 **`ri_motion_v5_py312`** 로 선택하고, 셀을 순서대로 모두 실행합니다.
 
-노트북 파일은 `ri_motion_v5_VR/project/ffw_sg2_vr_teleoperation/` 아래에 있습니다. 위치는 그대로지만, 코드·로봇 모델·worker 통신은 VR Teleoperation과 같은 `VR_teleoperation/` 공통 런타임을 불러 씁니다.
+노트북 파일은 `ri_motion_v5_VR/project/ffw_sg2_vr_teleoperation/real_notebook` 아래에 있습니다.
 
 셀 2가 C++ IK·충돌 거리 모듈을 현재 Python에 맞게 빌드합니다. 처음 실행할 때는 시간이 걸리고, 빌드에 실패하면 예외를 내고 멈춥니다 (Xcode Command Line Tools 확인).
 
 | 노트북 | 조작 단위 |
 | --- | --- |
 | `real_notebook/real_joint_controller_sg2_teleop.ipynb` | **Joint controller** — 관절마다 기즈모가 붙고, 끌면 그 관절의 qpos를 그대로 씁니다. IK를 풀지 않습니다 |
-| `real_notebook/real_eef_controller_sg2_teleop.ipynb` | **EEF controller** — 좌/우 손목 기즈모를 끌면 두 목표를 충돌 인식 IK로 함께 풀어 명령합니다 |
+| `real_notebook/real_eef_controller_sg2_teleop.ipynb` | **EEF controller** — 좌/우 손목 기즈모를 끌면 두 목표를 collision aware IK로 함께 풀어 명령합니다 |
 
 ### Joint controller 사용법
 

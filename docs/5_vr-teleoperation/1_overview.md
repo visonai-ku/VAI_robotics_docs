@@ -86,7 +86,7 @@ requirements-notebook.txt       ← 위 + ipykernel, jupyterlab
 
 1. `sim_notebook/sim_vr_teleop.ipynb` 를 엽니다.
 2. 커널을 `ri_motion_v5_py312` 로 선택합니다.
-3. 설정 셀이 출력한 주소(`https://<맥북 IP>:8443/`)를 Quest 브라우저에 입력합니다.
+3. 설정 셀이 출력한 주소(`https://192.168.6.xxx:8443/`)를 Quest 브라우저에 입력합니다.
 4. MuJoCo 화면이 뜨면 양손 grip을 눌러 attach하고, 팔이 따라 움직이는지 확인합니다.
 
 ## 관련 문서

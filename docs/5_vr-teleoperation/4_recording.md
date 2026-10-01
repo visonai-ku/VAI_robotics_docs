@@ -7,7 +7,7 @@ title: 녹화와 데이터
 
 :::info[시작 전 확인]
 - [ ] [실행](./3_run.md) 절차로 텔레옵이 돌고 있는가
-- [ ] Orin outbound를 `SG2_FIXED_QUEST=1 worker_outbound_meta` 로 띄웠는가 (카메라 3대)
+- [ ] Orin에서 `worker_outbound` 가 떠 있는가 (관절 + 카메라 3대)
 - [ ] 노트북 녹화 설정 셀의 `TASK_NAME` 을 이번 작업 이름으로 바꿨는가
 :::
 
@@ -90,7 +90,7 @@ EEF 자세는 손마다 `x y z qw qx qy qz` (base_link 기준, m / 쿼터니언)
 | `wrist_left` | Intel RealSense D405 (왼손) | 5571 |
 | `wrist_right` | Intel RealSense D405 (오른손) | 5572 |
 
-카메라를 함께 받으려면 Orin에서 `worker_outbound` 가 아니라 **`worker_outbound_meta`** 로 실행해야 합니다.
+카메라 3대는 Orin의 `worker_outbound` 가 관절 상태와 함께 보냅니다.
 
 ## 데이터셋 검수
 

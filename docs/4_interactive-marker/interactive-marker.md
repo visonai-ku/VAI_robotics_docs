@@ -14,7 +14,7 @@ VR 없이 **마우스로 마커를 끌어서** FFW-SG2의 팔을 움직이는 �
 :::info[시작 전 확인]
 - [ ] [환경 구축](../3_pipeline/1_setup.md) 완료 — conda 환경 `ri_motion_v5_py312` + **Xcode Command Line Tools** (IK 모듈 빌드용)
 - [ ] [로봇 구동](../3_pipeline/2_robot-start.md) 완료 — 전원·E-STOP 해제 후 `worker_bringup`
-- [ ] Orin 컨테이너 접속 상태 (`docker exec -it ai_worker bash`)
+- [ ] Orin 컨테이너 접속 상태 (`docker_exec`)
 :::
 
 :::danger[실제 로봇 구동 시 반드시 확인]
@@ -32,16 +32,16 @@ worker_bringup
 ```
 
 ```bash title="터미널 2 — 로봇 → 맥북 (현재 state)"
-SG2_FIXED_QUEST=1 worker_outbound
+worker_outbound
 ```
 
 ```bash title="터미널 3 — 맥북 → 로봇 (목표 state)"
-SG2_FIXED_QUEST=1 SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
+SG2_ZMQ_SUB_IP=192.168.6.xxx worker_inbound    # 맥북 IP 입력
 ```
 
 :::warning[VR과 같은 JSON worker를 씁니다]
-Joint/EEF 노트북도 VR Teleoperation과 같은 **strict JSON worker**로 통신합니다. JSON이 기본값이지만 남아 있는 환경 변수를 덮어쓰도록 `SG2_FIXED_QUEST=1` 을 붙여 띄웁니다.
-**`SG2_FIXED_QUEST=0` 으로 띄우면 동작하지 않습니다.** (예전 pickle 방식)
+Joint/EEF 노트북도 VR Teleoperation과 같은 **strict JSON worker**로 통신합니다. JSON이 기본값이라 별도 환경 변수 없이 띄우면 됩니다.
+**`SG2_FIXED_QUEST=0` 이 설정돼 있으면 동작하지 않습니다.** (예전 pickle 방식)
 
 로봇 제어 세션은 한 번에 하나만 가질 수 있으니, VR·베이스·정책 노트북은 먼저 `STOP`/`OFF` 하세요.
 :::
@@ -104,18 +104,20 @@ E-stop을 누를 사람을 반드시 옆에 두세요.
 
 ## 종료
 
+현재 `worker_shutdown` 은 버그 수정 전이라 팔이 **책상 위 영역**에 있을 때만 씁니다. 팔이 책상 아래에 있다면 `worker_shutdown` 없이 **inbound → outbound → bringup** 순으로 `Ctrl+C` 합니다. bringup을 끄면 토크가 풀려 팔이 아래로 떨어지니 팔 아래를 비워 두세요.
+
 ```bash
 worker_shutdown
 ```
 
-`completed` 로그를 확인한 뒤 **inbound → outbound → bringup** 순으로 종료합니다.
+`completed` 로그를 확인한 뒤, inbound가 아직 떠 있으면 `Ctrl+C` 로 끄고 **outbound → bringup** 순으로 종료합니다. 자세한 절차는 [로봇 종료](../3_pipeline/3_robot-exit.md)를 참고하세요.
 
 ## 자주 겪는 문제
 
 | 증상 | 원인 / 해결 |
 | --- | --- |
 | 마커를 끌어도 로봇이 안 움직임 | `ARMING` 이 끝나지 않았거나 다른 노트북이 제어 세션을 쥐고 있음. 다른 노트북 STOP 후 `OFF` → `ON` |
-| `invalid_json_feedback` · `protocol_mismatch_legacy_pickle` | worker가 `SG2_FIXED_QUEST=0`(pickle)로 떠 있음. 두 worker를 `SG2_FIXED_QUEST=1` 로 재시작 |
+| `invalid_json_feedback` · `protocol_mismatch_legacy_pickle` | worker가 pickle 모드(`SG2_FIXED_QUEST=0`)로 떠 있음. `echo $SG2_FIXED_QUEST` 가 `0` 이면 `unset SG2_FIXED_QUEST` 후 두 worker를 다시 띄움 |
 | 목표를 줘도 팔이 반응 없음 | inbound의 `SG2_ZMQ_SUB_IP` 가 현재 맥북 IP와 다름 |
 | 셀 2에서 빌드 오류 | 컴파일러 없음. `xcode-select --install` 후 커널 재시작 |
 | 관절에 힘이 없음 | torque-off 상태. Remote E-STOP **A 버튼** |

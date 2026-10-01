@@ -198,3 +198,27 @@ div[class^='codeBlockTitle'] {
   text-decoration-thickness: 1px;
   text-underline-offset: 2px;
 }
+
+/* 코드 블록에서 사용자가 채워 넣는 값(xxx)과 그 설명 주석 강조 */
+:root {
+  --code-placeholder-color: #cf222e;
+  --code-placeholder-bg: rgba(207, 34, 46, 0.12);
+}
+
+[data-theme='dark'] {
+  --code-placeholder-color: #ff7b72;
+  --code-placeholder-bg: rgba(255, 123, 114, 0.18);
+}
+
+.code-placeholder {
+  color: var(--code-placeholder-color);
+  background: var(--code-placeholder-bg);
+  border-radius: 3px;
+  font-weight: 700;
+}
+
+.code-placeholder-note {
+  color: var(--code-placeholder-color) !important;
+  font-style: normal !important;
+  font-weight: 700;
+}

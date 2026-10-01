@@ -7,7 +7,6 @@ title: 실행
 
 :::info[시작 전 확인]
 - [ ] [환경 구축](../3_pipeline/1_setup.md) 완료 — conda 환경 `ri_motion_v5_py312`, 커널 등록
-- [ ] 로봇 worker가 최신 버전인가 — inbound 시작 로그에 `Protocol: strict JSON; explicit arm required` 와 `arm 120 deg/s, gripper 120 deg/s, home 100.0 deg/s`
 - [ ] Quest가 Wi-Fi `AIWORKER1115` 에 연결되어 있고, 맥북도 192.168.6.x 네트워크에 있음
 :::
 
@@ -34,33 +33,32 @@ bringup → outbound → inbound → 노트북 실행 → 왼쪽 X (녹화 시�
 
 ```bash title="터미널 1 · 2 · 3 공통 — Orin 접속"
 ssh robotis@ffw-SNPR48A1115.local
-docker exec -it ai_worker bash
+docker_exec                           # = docker exec -it ai_worker bash
 ```
 
 컨테이너 안에서 터미널 하나에 하나씩 실행합니다.
 
-```bash title="터미널 1 — bringup"
-worker_bringup_teleop
+```bash title="터미널 1 — bringup (초기 자세 이동이 끝날 때까지 대기)"
+worker_bringup
 ```
 
 ```bash title="터미널 2 — 로봇 → 맥북 (관절 + 카메라 3대)"
-SG2_FIXED_QUEST=1 worker_outbound_meta
+worker_outbound
 ```
 
 ```bash title="터미널 3 — 맥북 → 로봇 (명령)"
-SG2_FIXED_QUEST=1 SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
+SG2_ZMQ_SUB_IP=192.168.6.xxx worker_inbound    # 맥북 IP 입력
 ```
 
-`<맥북 IP>` 는 아래 ②의 노트북 설정 셀이 알려줍니다.
+`xxx` 자리에 들어갈 맥북 IP는 아래 ②의 노트북 설정 셀이 알려줍니다. `<`, `>` 같은 기호 없이 숫자만 입력합니다.
 
-- `worker_bringup_teleop` 은 켤 때 **헤드만** `[0, 0]` 으로 움직이고 팔·리프트·베이스는 그대로 둡니다. (헤드가 범위를 벗어나 있으면 worker가 로봇 상태를 거부하기 때문)
-  - 헤드도 그대로: `worker_bringup_teleop init_head:=false`
-  - 전부 초기 자세로: `worker_bringup_teleop init_position:=true`
-- outbound 시작 로그는 `Protocol: strict JSON with source freshness`, inbound는 `Protocol: strict JSON; explicit arm required` 여야 합니다. `legacy pickle` 이 보이면 `SG2_FIXED_QUEST=1` 을 붙여 다시 띄웁니다.
-- inbound 시작 로그에 `home 100.0 deg/s` 가 보여야 합니다. (B 버튼 reset pose 속도)
+- `worker_bringup` 은 켤 때 **팔·헤드·리프트 전체를 초기 자세로** 옮깁니다. 이동이 끝난 뒤 터미널 2·3을 띄웁니다.
+  - 팔을 올리면 안 될 때: `worker_bringup init_position:=false` (헤드만 초기 자세로 이동)
+  - 자세한 옵션은 [로봇 구동](../3_pipeline/2_robot-start.md#worker_-명령-정리) 참고
+- outbound 시작 로그는 `Protocol: strict JSON with source freshness`, inbound는 `Protocol: strict JSON; explicit arm required` 여야 합니다. `legacy pickle` 이 보이면 `unset SG2_FIXED_QUEST` 후 다시 띄웁니다.
 
 :::warning
-worker는 `SG2_FIXED_QUEST` 를 주지 않아도 JSON으로 뜨지만, 터미널에 예전 값(`0`)이 남아 있으면 pickle 모드로 떠서 노트북과 통신하지 못합니다. **`SG2_FIXED_QUEST=1` 을 항상 붙이세요.**
+worker는 `SG2_FIXED_QUEST` 를 주지 않아도 JSON으로 뜹니다. 다만 환경에 `SG2_FIXED_QUEST=0` 이 남아 있으면 pickle 모드로 떠서 노트북과 통신하지 못하니 `unset SG2_FIXED_QUEST` 하세요.
 `SG2_ZMQ_SUB_IP` 를 빼먹으면 로봇이 명령을 받지 못합니다. `command not found` 가 나오면 `source ~/.bashrc` 후 다시 실행하세요.
 :::
 
@@ -72,7 +70,7 @@ worker는 `SG2_FIXED_QUEST` 를 주지 않아도 JSON으로 뜨지만, 터미널
 4. 설정 셀 출력의 IP를 확인합니다. 이 IP로 ①의 터미널 3과 ③의 Quest 주소를 맞춥니다.
 
    ```
-   PC IP: 192.168.6.102 → Quest: https://192.168.6.102:8443/ | Orin: SG2_FIXED_QUEST=1 SG2_ZMQ_SUB_IP=192.168.6.102 worker_inbound
+   PC IP: 192.168.6.102 → Quest: https://192.168.6.102:8443/ | Orin: SG2_ZMQ_SUB_IP=192.168.6.102 worker_inbound
    ```
 
 5. 마지막 실행 셀을 실행하면 **MuJoCo 화면 / 컨트롤 창 / SG2 Record 창** 이 뜹니다. **이 셀이 돌아가는 동안에만** Quest 페이지가 열립니다.
@@ -83,7 +81,7 @@ worker는 `SG2_FIXED_QUEST` 를 주지 않아도 JSON으로 뜨지만, 터미널
 
 ## ③ Quest — 페이지 접속
 
-1. Quest 브라우저 주소창에 직접 입력: `https://<맥북 IP>:8443/`
+1. Quest 브라우저 주소창에 직접 입력: `https://192.168.6.xxx:8443/`
    (기록에 남은 다른 IP를 누르지 마세요. `https://` 와 `:8443` 이 필수입니다.)
 2. "연결이 비공개로 설정되어 있지 않습니다" → **고급** → **계속 진행**
 3. "Fixed Quest" 페이지 맨 위의 **[Quest에서 XR 시작]** 버튼을 누릅니다.
@@ -174,9 +172,9 @@ grip당 20cm 작업범위와 속도 제한도 두 모드가 같습니다.
 ```
 
 ```bash title="Orin 준비"
-worker_bringup_teleop
-SG2_FIXED_QUEST=1 worker_outbound
-SG2_FIXED_QUEST=1 SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
+worker_bringup
+worker_outbound
+SG2_ZMQ_SUB_IP=192.168.6.xxx worker_inbound    # 맥북 IP 입력
 ```
 
 1. `SG2 Base Command` 창에서 `Speed` 를 **`SLOW`** 로 바꿉니다. (창은 `NORMAL` 로 시작합니다)
@@ -235,8 +233,8 @@ SG2_FIXED_QUEST=1 SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
 
 1. 오른쪽 **B 1초** (초기 자세로 정리) → 컨트롤 창 `Run → STOP`
 2. 맥북: 셀이 끝나면 녹화 중이던 에피소드가 저장되고 데이터셋이 마무리(finalize)됩니다. 마무리 메시지가 나올 때까지 기다리세요.
-3. Orin 터미널 3개: 각각 `Ctrl+C` (**inbound → outbound → bringup** 순)
-4. 팔을 접어 두려면 Orin에서 `worker_shutdown`
+3. 팔을 접어 두려면 두 팔이 **책상 위 영역**에 있는지 확인한 뒤 Orin에서 `worker_shutdown` 을 실행합니다. 버그 수정 전이라 팔이 책상 아래에 있다면 쓰지 않고 바로 다음 단계로 넘어갑니다. bringup을 끄면 토크가 풀려 팔이 아래로 떨어지니 팔 아래를 비워 두세요.
+4. Orin 터미널: inbound가 아직 떠 있으면 `Ctrl+C` 한 뒤 **outbound → bringup** 순으로 `Ctrl+C`
 
 전원까지 내리는 절차는 [AI WORKER 로봇 종료](../3_pipeline/3_robot-exit.md)를 참고하세요.
 

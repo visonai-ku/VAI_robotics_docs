@@ -41,18 +41,18 @@ python scripts/check_policy_inference.py <checkpoint_path> --device cpu   # 장�
 
 ## 2. Orin — 터미널 3개
 
-VR Teleoperation과 같은 worker를 씁니다. 정책이 손목 카메라를 입력으로 받으므로 outbound는 `_meta` 로 띄웁니다.
+VR Teleoperation과 같은 worker를 씁니다. 정책 입력 카메라도 `worker_outbound` 가 함께 보냅니다.
 
-```bash title="터미널 1 — bringup"
-worker_bringup_teleop
+```bash title="터미널 1 — bringup (초기 자세 이동이 끝날 때까지 대기)"
+worker_bringup
 ```
 
 ```bash title="터미널 2 — 로봇 → 맥북 (관절 + 카메라)"
-SG2_FIXED_QUEST=1 worker_outbound_meta
+worker_outbound
 ```
 
 ```bash title="터미널 3 — 맥북 → 로봇 (명령)"
-SG2_FIXED_QUEST=1 SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
+SG2_ZMQ_SUB_IP=192.168.6.xxx worker_inbound    # 맥북 IP 입력
 ```
 
 ## 3. 노트북 설정
@@ -145,7 +145,7 @@ SG2_FIXED_QUEST=1 SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
 | --- | --- |
 | `check_policy_inference.py` 에서 오류 | 체크포인트 경로(`pretrained_model` 폴더인지), LeRobot 버전(0.6.1), `--device` 확인 |
 | 세션 준비 셀에서 장치 오류 | 체크포인트에 `cuda` 가 저장되어 있음. 맥에서는 `DEVICE = "mps"` 또는 `"cpu"` |
-| 로봇이 움직이지 않고 `WAIT_ROBOT` 등에 머묾 | 피드백·카메라가 안 들어옴. outbound를 `worker_outbound_meta` 로 띄웠는지, `CAMERAS` 포트가 맞는지 확인 |
+| 로봇이 움직이지 않고 `WAIT_ROBOT` 등에 머묾 | 피드백·카메라가 안 들어옴. outbound가 떠 있는지, `CAMERAS` 포트가 맞는지 확인 |
 | 셀 출력에 `safety box violation, holding position` | 예측한 자세가 safety box 밖. 정상 보호 동작. 계속 나오면 시작 자세나 정책을 점검 |
 | `FAULT` 로 멈춤 | 충돌·관절 범위·추종 오차 등. 셀 출력의 `reason` 확인 후 세션 준비 셀부터 다시 |
 | 키를 눌러도 반응 없음 (B 방식) | `SG2 Policy Recording` 창에 포커스가 없음. 창을 클릭한 뒤 누름 |

@@ -32,8 +32,8 @@ title: 문제 해결
 | 증상 | 원인 / 해결 |
 | --- | --- |
 | DRY RUN은 되는데 REAL RUN에서 로봇이 안 움직임 | inbound의 `SG2_ZMQ_SUB_IP` 가 맥북 IP가 아님. 또는 다른 노트북(마커·베이스·정책)이 제어 세션을 쥐고 있음. 확인 후 inbound 재시작 |
-| `invalid_json_feedback` · `protocol_mismatch_legacy_pickle` · `utf-8 ... byte 0x80` | worker가 pickle 모드(`SG2_FIXED_QUEST=0`)로 떠 있거나 예전 프로세스가 남아 있음. 두 worker를 모두 끄고 `SG2_FIXED_QUEST=1` 을 붙여 다시 실행 |
-| 로봇 피드백이 계속 거부됨 | 헤드가 VR 허용 범위 밖. `worker_bringup_teleop`(헤드 `[0, 0]`)로 다시 켜기 |
+| `invalid_json_feedback` · `protocol_mismatch_legacy_pickle` · `utf-8 ... byte 0x80` | worker가 pickle 모드(`SG2_FIXED_QUEST=0`)로 떠 있거나 예전 프로세스가 남아 있음. 두 worker를 모두 끄고, `echo $SG2_FIXED_QUEST` 가 `0` 이면 `unset SG2_FIXED_QUEST` 후 다시 실행 |
+| 로봇 피드백이 계속 거부됨 | 헤드가 VR 허용 범위 밖. `worker_bringup` 으로 다시 켜기 (팔을 움직이면 안 되면 `worker_bringup init_position:=false` — 헤드만 초기 자세로 이동) |
 | 화면에 `!! IK FAILED` | 손이 로봇이 닿을 수 없는 곳. 손을 되돌리고 grip을 놓았다 다시 잡기 |
 | B reset pose가 "중단 … 팔을 조금 벌린 뒤 다시 B" | 경로 충돌 검사에서 막힘. VR로 팔 사이를 벌린 뒤 다시 B |
 | 로봇이 두 곳에서 명령 받는 듯 흔들림 | `ros2 launch robotis_vuer ...`(ROBOTIS VR)이나 LG2 리더가 켜져 있음. 끄고 사용 |
@@ -47,7 +47,7 @@ title: 문제 해결
 
 | 증상 | 원인 / 해결 |
 | --- | --- |
-| 카메라가 안 잡힘 | `worker_outbound_meta` 가 아니라 `worker_outbound` 로 켰음 |
+| 카메라가 안 잡힘 | `worker_outbound` 가 꺼져 있거나, bringup을 `launch_cameras:=false` 로 켰거나, 카메라 연결 불량 |
 | `REC` 을 눌러도 바로 `STOP` 으로 돌아감 | 카메라 3대의 첫 프레임을 아직 못 받음. 창 제목의 `카메라 프레임 대기 중` 이 사라진 뒤 다시 누름 |
 | `... EEF pose ... 데이터셋입니다. ... 이어서 녹화할 수 없으니` | 같은 폴더에 EEF 설정이 다른 데이터셋이 있음. `TASK_NAME` 을 바꾸거나 `RECORD_EEF` 를 기존 데이터셋에 맞춤 |
 | `finalize 되지 않은 데이터셋입니다` | 이전 세션이 마무리 전에 끊김. 다른 `TASK_NAME` 으로 새로 녹화 |

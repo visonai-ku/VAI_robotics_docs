@@ -36,7 +36,7 @@ worker_outbound
 ```
 
 ```bash title="터미널 3 — 맥북 → 로봇 (목표 state)"
-SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
+SG2_ZMQ_SUB_IP=192.168.6.xxx worker_inbound    # 맥북 IP 입력
 ```
 
 :::warning[VR과 같은 JSON worker를 씁니다]

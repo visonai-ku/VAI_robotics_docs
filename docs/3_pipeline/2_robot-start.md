@@ -95,7 +95,7 @@ VR · Joint · EEF · Base · 정책 추론이 모두 `VR_teleoperation/package/
 
 ```bash title="Orin 컨테이너 — 모든 파이프라인 공통"
 worker_outbound
-SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
+SG2_ZMQ_SUB_IP=192.168.6.xxx worker_inbound    # 맥북 IP 입력
 ```
 
 - `SG2_FIXED_QUEST=0` 은 예전 pickle 방식입니다. 현재 노트북은 이 모드로 통신하지 못하니 **쓰지 않습니다.** `.bashrc` 등에 `export SG2_FIXED_QUEST=0` 이 남아 있다면 지웁니다.

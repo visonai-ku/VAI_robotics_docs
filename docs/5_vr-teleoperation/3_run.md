@@ -47,10 +47,10 @@ worker_outbound
 ```
 
 ```bash title="터미널 3 — 맥북 → 로봇 (명령)"
-SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
+SG2_ZMQ_SUB_IP=192.168.6.xxx worker_inbound    # 맥북 IP 입력
 ```
 
-`<맥북 IP>` 는 아래 ②의 노트북 설정 셀이 알려줍니다.
+`xxx` 자리에 들어갈 맥북 IP는 아래 ②의 노트북 설정 셀이 알려줍니다. `<`, `>` 같은 기호 없이 숫자만 입력합니다.
 
 - `worker_bringup` 은 켤 때 **팔·헤드·리프트 전체를 초기 자세로** 옮깁니다. 이동이 끝난 뒤 터미널 2·3을 띄웁니다.
   - 팔을 올리면 안 될 때: `worker_bringup init_position:=false` (헤드만 초기 자세로 이동)
@@ -81,7 +81,7 @@ worker는 `SG2_FIXED_QUEST` 를 주지 않아도 JSON으로 뜹니다. 다만 �
 
 ## ③ Quest — 페이지 접속
 
-1. Quest 브라우저 주소창에 직접 입력: `https://<맥북 IP>:8443/`
+1. Quest 브라우저 주소창에 직접 입력: `https://192.168.6.xxx:8443/`
    (기록에 남은 다른 IP를 누르지 마세요. `https://` 와 `:8443` 이 필수입니다.)
 2. "연결이 비공개로 설정되어 있지 않습니다" → **고급** → **계속 진행**
 3. "Fixed Quest" 페이지 맨 위의 **[Quest에서 XR 시작]** 버튼을 누릅니다.
@@ -174,7 +174,7 @@ grip당 20cm 작업범위와 속도 제한도 두 모드가 같습니다.
 ```bash title="Orin 준비"
 worker_bringup
 worker_outbound
-SG2_ZMQ_SUB_IP=<맥북 IP> worker_inbound
+SG2_ZMQ_SUB_IP=192.168.6.xxx worker_inbound    # 맥북 IP 입력
 ```
 
 1. `SG2 Base Command` 창에서 `Speed` 를 **`SLOW`** 로 바꿉니다. (창은 `NORMAL` 로 시작합니다)

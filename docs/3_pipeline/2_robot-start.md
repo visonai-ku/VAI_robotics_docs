@@ -142,6 +142,7 @@ ffw_bringup/launch/ffw_sg2_ai.launch.py      ← worker_bringup_lg2
 
 | 증상 | 원인 / 해결 |
 | --- | --- |
+| TxRxResult There is no status packet 어쩌고 ... | Remote E-STOP의 A 버튼을 누르셨나요? |
 | 전원을 켰는데 관절에 힘이 없음 | torque-off 상태. Remote E-STOP의 **A 버튼**을 누름 |
 | `command not found` | `source ~/.bashrc` 후 재실행 |
 | Orin 접속 안 됨 (`No route to host`) | 로봇 전원, 부팅 대기(1~2분), 랜선 확인 |

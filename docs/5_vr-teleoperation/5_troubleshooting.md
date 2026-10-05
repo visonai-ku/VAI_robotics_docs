@@ -27,6 +27,16 @@ title: 문제 해결
 | 잡아도 팔이 거의 안 움직임 | grip을 짧게만 잡음 (속도가 서서히 올라감). 계속 잡은 채 움직이기 |
 | 가만히 든 손이 살짝 기울어도 로봇 손목이 돎 | 녹화용 노트북은 회전 데드밴드가 0°(`ROTATION_DEADBAND_DEG=0`)라 작은 회전도 그대로 따라감. 필요하면 설정 셀에서 값을 올리고 커널 재시작 |
 
+## 개인 보정
+
+| 증상 | 원인 / 해결 |
+| --- | --- |
+| 새 프로필이 작업자 보정 목록에 없음 | 실행 중에 저장한 파일은 **새로고침** 필요. `calibration/profiles/` · `calibration/diagnostics/` 에 있는지 확인 |
+| 목록에서 골라도 바뀌지 않음 | 조작·복귀·녹화 중에는 잠김. REAL RUN이면 양손 추적이 유효한 상태에서 grip을 모두 놓고 다시 선택. DRY RUN 대기 중에는 추적 없이 바뀜 |
+| `변경 실패 (파일명): ...` | 미완료·손상된 프로필. 현재 보정은 그대로 유지됨. 보정 노트북 결과의 `fit_success` · `reason` 확인 |
+| 설정 셀을 다시 실행했더니 보정이 v1로 돌아감 | 정상. 설정 셀의 `PROFILE_PATH` 로 초기화됨. 목록에서 다시 고르거나 `PROFILE_PATH` 를 바꿈 |
+| `unexpected keyword argument 'CONFIRM_CALIBRATION_SETUP'` 등 | 없어진 예전 설정(`CONFIRM_CALIBRATION_SETUP`, `*_CANDIDATE_*`, `ALLOW_FAILED_PROFILE_IN_SIM`)이 설정 셀에 남아 있음. 해당 줄을 지우고 설정 셀부터 다시 실행 |
+
 ## 로봇 동작
 
 | 증상 | 원인 / 해결 |
@@ -67,5 +77,6 @@ title: 문제 해결
 ## 관련 문서
 
 - [개요](./1_overview.md)
+- [개인 보정](./2_calibration.md)
 - [실행](./3_run.md)
 - [녹화와 데이터](./4_recording.md)

@@ -50,6 +50,10 @@ calibration_notebook/
 quest_client/                   ← Quest 가 여는 웹 페이지 (index.html, client.js)
 package/
   intent_teleop.py              ← 텔레옵 메인 루프, 컨트롤 창
+  intent_profile_selector.py    ← 컨트롤 창의 작업자 보정 목록
+  intent_calibration.py         ← 보정 행렬 계산·프로필 불러오기
+  intent_capture_ui.py          ← 보정 수집 창
+  posture_ik.py                 ← 팔 자세 유지 IK
   controller_mapping.py         ← 컨트롤러 delta → 로봇 목표 (20cm 작업범위, 회전 데드밴드)
   quest_controller_server.py    ← 8443 HTTPS/WebSocket 서버
   fixed_quest_transport.py      ← ZMQ 송수신 (상태 5560 / 명령 5561)
@@ -69,13 +73,14 @@ package/
     inbound.py  outbound.py  fixed_quest_protocol.py  camera_outbound.py  freedrive.py
 docs/WORKER_SETUP.md            ← 로봇 worker 배포 안내
 docs/CALIBRATION.md             ← 개인 보정 안내
+docs/POSTURE_IK.md              ← 자세 유지 IK 설정·테스트 안내
 scripts/                        ← check_workspace.py, validate_intent_pipeline.py,
                                   check_policy_inference.py, check_safety_box_inference.py, live_fk_monitor.py
 tests/                          ← 오프라인 회귀 검사
 vendor/ri_motion_v5_package/    ← 실행에 필요한 공용 런타임 사본
 xml/                            ← SG2 MJCF 모델과 mesh
 qpos/                           ← Joint 컨트롤러의 저장 자세 (sg2_joint_qpos.json)
-calibration/                    ← 개인 보정값 (diagnostics/, reviews/)
+calibration/                    ← 개인 보정값 (profiles/ 새 프로필, diagnostics/ v1·수집 원본, reviews/ 예전 기록)
 requirements.txt                ← 런타임 의존성
 requirements-notebook.txt       ← 위 + ipykernel, jupyterlab
 ```

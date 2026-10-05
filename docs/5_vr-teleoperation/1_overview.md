@@ -89,6 +89,6 @@ requirements-notebook.txt       ← 위 + ipykernel, jupyterlab
 
 - [실행](./3_run.md)
 - [녹화와 데이터](./4_recording.md)
-- [문제 해결](./5_troubleshooting.md)
+- [문제 해결](../7_troubleshooting.md)
 - [Pipeline — 환경 구축](../3_pipeline/1_setup.md)
 - [Pipeline — 로봇 구동](../3_pipeline/2_robot-start.md)

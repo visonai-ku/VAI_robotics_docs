@@ -18,6 +18,7 @@ title: Intro
 | [**Interactive Marker**](./4_interactive-marker/interactive-marker.md) | MuJoCo 뷰어의 마커를 끌어 FFW-SG2를 조작하는 Joint / EEF 컨트롤러 사용법을 다룹니다. |
 | [**VR Teleoperation**](./5_vr-teleoperation/1_overview.md) | 팀에서 개발한 파이프라인으로 FFW-SG2를 face-to-face teleoperation하고 데모를 녹화하는 방법을 다룹니다. |
 | [**Policy Inference**](./6_policy-inference/policy-inference.md) | 녹화한 데이터로 학습한 LeRobot 정책을 FFW-SG2에서 자율 구동하는 방법을 다룹니다. |
+| [**문제 해결**](./7_troubleshooting.md) | VR Teleoperation 중 자주 겪는 연결·입력·로봇 동작·녹화·설치 문제와 해결법을 다룹니다. |
 
 ## 처음 오셨다면
 

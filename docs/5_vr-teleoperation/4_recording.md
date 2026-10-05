@@ -12,10 +12,10 @@ title: 녹화와 데이터
 :::
 
 :::note
-텔레옵 중 관절·명령·카메라를 에피소드 단위로 기록합니다. 기록은 [LeRobot v3.0 데이터셋](https://huggingface.co/docs/lerobot/en/lerobot-dataset-v3) 형식으로 바로 저장되어, 별도 변환 없이 모방학습에 쓸 수 있습니다.
+Teleoperation 중 관절·명령·카메라를 에피소드 단위로 기록합니다. 기록은 [LeRobot v3.0 데이터셋](https://huggingface.co/docs/lerobot/en/lerobot-dataset-v3) 형식으로 바로 저장되어, 별도 변환 없이 imitation learning에 쓸 수 있습니다.
 :::
 
-## 녹화 조작
+## VR Teleoperaion 중 녹화 조작법
 
 | 방법 | 동작 |
 | --- | --- |
@@ -125,6 +125,6 @@ EEF 자세는 손마다 `x y z qw qx qy qz` (base_link 기준, m / 쿼터니언)
 ## 관련 문서
 
 - [실행](./3_run.md)
-- [문제 해결](./5_troubleshooting.md)
+- [문제 해결](../7_troubleshooting.md)
 - [Policy Inference](../6_policy-inference/policy-inference.md) — 이 데이터로 학습한 정책을 로봇에서 돌리기
 - [AI WORKER 개요 — 센서 구성](../1_ai-worker/1_overview.md)

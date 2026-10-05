@@ -227,4 +227,4 @@ SG2_ZMQ_SUB_IP=192.168.6.xxx worker_inbound    # 맥북 IP 입력
 - [개요](./1_overview.md)
 - [개인 보정](./2_calibration.md)
 - [녹화와 데이터](./4_recording.md)
-- [문제 해결](./5_troubleshooting.md)
+- [문제 해결](../7_troubleshooting.md)

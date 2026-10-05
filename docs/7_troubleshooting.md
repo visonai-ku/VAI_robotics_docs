@@ -1,5 +1,5 @@
 ---
-sidebar_position: 5
+sidebar_position: 8
 title: 문제 해결
 ---
 
@@ -70,13 +70,13 @@ title: 문제 해결
 | --- | --- |
 | 녹화·검수 창에서 `The function is not implemented` | LeRobot이 설치한 headless OpenCV가 남아 있음. `python -m pip install --force-reinstall --no-deps opencv-python==4.12.0.88` |
 | `command not found` (worker_*) | `source ~/.bashrc` 후 다시 실행 |
-| 커널 목록에 `ri_motion_v5_py312` 가 없음 | ipykernel 등록이 안 됨. [Pipeline 환경 구축](../3_pipeline/1_setup.md)의 커널 등록 명령 재실행 |
+| 커널 목록에 `ri_motion_v5_py312` 가 없음 | ipykernel 등록이 안 됨. [Pipeline 환경 구축](./3_pipeline/1_setup.md)의 커널 등록 명령 재실행 |
 | 녹화나 추론 import에서 오류 | 예전 `ri_motion_v5_env`(Python 3.10) 커널로 실행함. `ri_motion_v5_py312` 로 바꾸고 재시작 |
 | `RuntimeError: An earlier project module is already loaded` | 다른 프로젝트 모듈이 올라온 커널을 재사용함. 커널 Restart 후 첫 셀부터 다시 실행 |
 
 ## 관련 문서
 
-- [개요](./1_overview.md)
-- [개인 보정](./2_calibration.md)
-- [실행](./3_run.md)
-- [녹화와 데이터](./4_recording.md)
+- [개요](./5_vr-teleoperation/1_overview.md)
+- [개인 보정](./5_vr-teleoperation/2_calibration.md)
+- [실행](./5_vr-teleoperation/3_run.md)
+- [녹화와 데이터](./5_vr-teleoperation/4_recording.md)

@@ -121,6 +121,6 @@ EEF 자세는 손마다 `x y z qw qx qy qz` (base_link 기준, m / 쿼터니언)
 ## 관련 문서
 
 - [실행](./3_run.md)
-- [문제 해결](./5_troubleshooting.md)
+- [문제 해결](../7_troubleshooting.md)
 - [Policy Inference](../6_policy-inference/policy-inference.md) — 이 데이터로 학습한 정책을 로봇에서 돌리기
 - [AI WORKER 개요 — 센서 구성](../1_ai-worker/1_overview.md)
